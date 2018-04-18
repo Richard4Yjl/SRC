@@ -1,0 +1,11 @@
+.coupon-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+.coupon-image {
+    width: 350px;
+    height: 100px;
+    margin-top: 15px;
+}

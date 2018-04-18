@@ -1,0 +1,38 @@
+{
+    "pages": [
+        "pages/home/home",
+        "pages/user/user",
+        "pages/toPay/toPay",
+        "pages/shopActivities/shopActivities",
+        "pages/reportFeedback/reportFeedback",
+        "pages/balances/balances",
+        "pages/coupon/coupon",
+        "pages/report/report",
+        "pages/paid/paid"
+        
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#ddd",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "list": [
+            {
+                "pagePath": "pages/home/home",
+                "iconPath": "image/home.png",
+                "selectedIconPath": "image/home_selected.png"
+            },
+            {
+                "pagePath": "pages/user/user",
+                "iconPath": "image/user.png",
+                "selectedIconPath": "image/user_selected.png"
+            },
+            {
+                "pagePath": "pages/toPay/toPay",
+                "iconPath": "image/ok.png",
+                "selectedIconPath": "image/ok_selected.png"
+            }
+        ]
+    }
+}

@@ -1,0 +1,30 @@
+<swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}">
+        <swiper-item>
+            <image src="{{item}}" class="slide-image" />
+        </swiper-item>
+    </block>
+</swiper>
+
+<view class="report-detail-container">
+    <view class="report-item" wx:for="{{reportList}}">
+        <view class="report-select-icon">
+            <image src="{{item.selectIconPath}}"></image>
+        </view>
+        <view class="report-select-detail">
+            <text>{{item.detail}}</text>
+        </view>
+    </view>
+
+    <view class="report-select-icon">
+        <image src= "../../image/select.png"></image>
+    </view>
+    <view class="report-select-detail-others">
+        <textarea placeholder='输入详细的举报信息' maxlength='140' show-confirm-bar='true'>
+        </textarea>
+    </view>
+</view>
+
+<button class='report-confirm-button'>
+    <text>确认举报</text>
+</button>

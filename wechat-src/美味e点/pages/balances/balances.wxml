@@ -1,0 +1,6 @@
+<view class="container">
+    <view class="balance">
+        <text> 余额: {{balance}}</text>
+    </view>
+    <button class="recharge-button">充值</button>
+</view>

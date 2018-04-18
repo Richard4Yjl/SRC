@@ -1,0 +1,3 @@
+<view class='coupon-container' wx:for="{{couponList}}">
+    <image class="coupon-image" src="{{item.imgUrl}}"></image>
+</view>
