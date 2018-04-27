@@ -6,29 +6,34 @@
     </block>
 </swiper>
 
+<view class="search-container">
+    <input class="search-input" value="{{searchValue}}" bindinput="searchInput" />
+    <icon class="search-cion" size='20' type='search' bindtap='searchIconTap'></icon>
+</view>
+
 <view class="recipe-container">
-    <view class="recipe-kind" >
-        <text class="meat {{kindSelected==0?'recipe-selected':''}}" bindtap='recipeKindTap' data-id='0'>肉类</text>
-        <text class="vegetable {{kindSelected==1?'recipe-selected':''}}" bindtap='recipeKindTap' data-id='1'>蔬菜</text>
-        <text class="snack {{kindSelected==2?'recipe-selected':''}}" bindtap='recipeKindTap' data-id='2'>小吃</text>
-        <text class="drink {{kindSelected==3?'recipe-selected':''}}" bindtap='recipeKindTap' data-id='3'>饮料</text>
-        <text class="others {{kindSelected==4?'recipe-selected':''}}" bindtap='recipeKindTap' data-id='4'>其他</text>
+    <view class="recipe-kind">
+        <view class="recipe-kind-text {{kindSelected==index?'recipe-selected':''}}" wx:for="{{recipeKind}}" bindtap='recipeKindTap' data-id='{{index}}'>
+            <text >{{item}}</text>
+        </view>
     </view>
-    <scroll-view class="recipe-detail-container" scroll-y >
-        <view class="recipe-item" wx:for="{{recipe}}">
-            <view class="add-icon">
+
+    <scroll-view class="recipe-detail-container" scroll-y>
+        <view class="recipe-item" 
+        wx:for="{{isSearching?searchingRecipeFoodImgUri:recipeFoodImgUri}}">
+            <view class="add-icon" bindtap='addIconTap' data-id="{{index}}">
                 <image src="../../image/add.png"></image>
             </view>
             <view class="food-icon">
-                <image src="{{item.foodImgUrl}}"></image>
+                <image src="{{item}}"></image>
             </view>
             <view class="recipe-detail">
-                <text>{{item.detail}}</text>
+                <text>{{isSearching?searchingRecipeDetail[index]:recipeDetail[index]}}</text>
             </view>
             <view class="food-count">
-                <text>x{{item.count}}</text>
+                <text>x{{isSearching?searchingRecipeCount[index]:recipeCount[index]}}</text>
             </view>
-            <view class="subtract-icon">
+            <view class="subtract-icon"  bindtap='subtractIconTap' data-id="{{index}}">
                 <image src="../../image/subtract.png"></image>
             </view>
         </view>
