@@ -8,7 +8,7 @@
 
 <view class="search-container">
     <input class="search-input" value="{{searchValue}}" bindinput="searchInput" />
-    <icon class="search-cion" size='20' type='search' bindtap='searchIconTap'></icon>
+    <icon class="search-cion" size='25' type='search' bindtap='searchIconTap'></icon>
 </view>
 
 <view class="recipe-container">

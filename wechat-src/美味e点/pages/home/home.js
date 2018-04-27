@@ -27,9 +27,10 @@ Page({
             0, 0, 0,
         ],
         isSearching: false,
-        searchingRecipeFoodImgUri:[],
-        searchingRecipeDetail:[],
-        searchingRecipeCount:[],
+        searchingRecipeFoodImgUri: [],
+        searchingRecipeDetail: [],
+        searchingRecipeCount: [],
+        searchedIndex:[],
         searchValue: "",
     },
     onLoad: function () {
@@ -37,7 +38,7 @@ Page({
     },
 
     recipeKindTap: function (e) {
-        console.log(e);
+    
         this.setData({
             kindSelected: -1
         });
@@ -70,14 +71,18 @@ Page({
         var recipeFoodImgUri = [];
         var recipeDetail = [];
         var recipeCount = [];
-
+        var searchedIndex = [];
         if (this.data.searchValue == "") {
             this.setData({
                 isSearching: false
             });
-          
+            searchedIndex = this.data.searchedIndex;
+            recipeCount = this.data.recipeCount;
+            for (var i in searchedIndex) {
+                recipeCount[searchedIndex[i]] =  this.data.searchingRecipeCount[i];
+            }
             this.setData({
-                recipeCount: searchingRecipeCount
+                recipeCount: recipeCount
             });
         }
         else {
@@ -88,41 +93,70 @@ Page({
                 if (this.data.recipeDetail[index].indexOf(this.data.searchValue) >= 0) {
                     recipeFoodImgUri.push(this.data.recipeFoodImgUri[index]);
                     recipeDetail.push(this.data.recipeDetail[index]);
-                    console.log(recipeDetail)
                     recipeCount.push(this.data.recipeCount[index]);
+                    searchedIndex.push(index);
                 }
             }
             this.setData({
                 searchingRecipeFoodImgUri: recipeFoodImgUri,
                 searchingRecipeDetail: recipeDetail,
                 searchingRecipeCount: recipeCount,
+                searchedIndex: searchedIndex,
             });
+           
         }
     },
     //缺少在搜索页面之后点击的实现
     addIconTap: function (e) {
         console.log(e);
         var index = e.currentTarget.dataset.id;
-        var recipeCount = this.data.recipeCount;
-        recipeCount[index] += 1;
-        if (recipeCount >= 10) {
-            //提示最大点10份
-            recipeCount = 10;
+        if (!this.data.isSearching) {
+            var recipeCount = this.data.recipeCount;
+            recipeCount[index] += 1;
+            if (recipeCount[index] >= 10) {
+                //提示最大点10份
+                recipeCount = 10;
+            }
+            this.setData({
+                recipeCount: recipeCount
+            })
         }
-        this.setData({
-            recipeCount: recipeCount
-        })
+        else {
+            var recipeCount = this.data.searchingRecipeCount;
+            recipeCount[index] += 1;
+            if (recipeCount[index] >= 10) {
+                //提示最大点10份
+                recipeCount = 10;
+            }
+            this.setData({
+                searchingRecipeCount: recipeCount
+            })
+        }
     },
     subtractIconTap: function (e) {
         console.log(e);
         var index = e.currentTarget.dataset.id;
-        var recipeCount = this.data.recipeCount;
-        recipeCount[index] -= 1;
-        if (recipeCount < 0) {
-            recipeCount = 0;
+        if (!this.data.isSearching) {
+            var recipeCount = this.data.recipeCount;
+            recipeCount[index] -= 1;
+            if (recipeCount[index] <= 0) {
+                //提示最大点10份
+                recipeCount = 0;
+            }
+            this.setData({
+                recipeCount: recipeCount
+            })
         }
-        this.setData({
-            recipeCount: recipeCount
-        })
+        else {
+            var recipeCount = this.data.searchingRecipeCount;
+            recipeCount[index] -= 1;
+            if (recipeCount[index] <= 0) {
+                //提示最大点10份
+                recipeCount = 0;
+            }
+            this.setData({
+                searchingRecipeCount: recipeCount
+            })
+        }
     },
 })
