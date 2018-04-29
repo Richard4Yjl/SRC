@@ -11,15 +11,20 @@
     <view class="recipe-title">
         <text>您的菜谱</text>
     </view>
-    <view class="recipe-item" wx:for="{{recipeList}}">
+    <view class="recipe-item" wx:for="{{recipeDetail}}">
         <view class="food-icon">
-            <image src="{{item.foodImgUrl}}"></image>
+            <image src="{{recipeFoodImgUri[index]}}"></image>
         </view>
         <view class="recipe-detail">
-            <text>{{item.detail}}</text>
+            <view>
+                <text>{{item}}</text>
+            </view>
+            <view>
+                <text>￥{{recipeMoney[index]}}</text>
+            </view>
         </view>
         <view class="food-count">
-            <text>x{{item.count}}</text>
+            <text>x{{recipeCount[index]}}</text>
         </view>
         <view class="minus-icon">
             <image src="../../image/minus.png"></image>

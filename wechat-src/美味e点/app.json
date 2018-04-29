@@ -30,8 +30,8 @@
             },
             {
                 "pagePath": "pages/toPay/toPay",
-                "iconPath": "image/ok.png",
-                "selectedIconPath": "image/ok_selected.png"
+                "iconPath": "image/shopCart.png",
+                "selectedIconPath": "image/shopCart_selected.png"
             }
         ]
     }

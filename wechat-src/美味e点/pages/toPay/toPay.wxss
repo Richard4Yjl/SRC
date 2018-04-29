@@ -62,9 +62,11 @@
 }
 .recipe-detail {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     flex-grow: 1;
-    align-items: center;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 10px;
 }
 .confirm-button {
     width: 70%;

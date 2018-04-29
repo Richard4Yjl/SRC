@@ -1,3 +1,5 @@
+var app = getApp();
+
 Page({
 
   /**
@@ -5,24 +7,24 @@ Page({
    */
   data: {
     deskID: 10,
-    moneyToPay: 100,
-    recipeList:[
-        {
-            foodImgUrl: '../../image/food.png',
-            detail: "湛江烧耗",
-            count: 1,
-        },
-        {
-            foodImgUrl: '../../image/food.png',
-            detail: "湛江烧耗",
-            count: 2,
-        },
-        {
-            foodImgUrl: '../../image/food.png',
-            detail: "湛江烧耗",
-            count: 3,
-        }
-    ]
+    moneyToPay: 0,
+    recipeFoodImgUri:[], 
+    recipeDetail:[], 
+    recipeMoney:[],
+    recipeCount: [],
+  },
+  onLoad: function(){
+      var moneyToPay = 0;
+      for (var index in app.globalData.recipeSelected.recipeMoney) {
+          moneyToPay += app.globalData.recipeSelected.recipeMoney[index];
+      }
+      this.setData({
+          recipeFoodImgUri: app.globalData.recipeSelected.recipeFoodImgUri,
+          recipeDetail: app.globalData.recipeSelected.recipeDetail,
+          recipeMoney: app.globalData.recipeSelected.recipeMoney,
+          recipeCount: app.globalData.recipeSelected.recipeCount,
+          moneyToPay: moneyToPay,
+      })
   }
  
 })

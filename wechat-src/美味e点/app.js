@@ -34,6 +34,12 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    recipeSelected: {
+        recipeFoodImgUri: [],
+        recipeDetail: [],
+        recipeMoney: [],
+        recipeCount: [],
+    },
   }
 })

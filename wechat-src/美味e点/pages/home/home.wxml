@@ -14,13 +14,12 @@
 <view class="recipe-container">
     <view class="recipe-kind">
         <view class="recipe-kind-text {{kindSelected==index?'recipe-selected':''}}" wx:for="{{recipeKind}}" bindtap='recipeKindTap' data-id='{{index}}'>
-            <text >{{item}}</text>
+            <text>{{item}}</text>
         </view>
     </view>
 
     <scroll-view class="recipe-detail-container" scroll-y>
-        <view class="recipe-item" 
-        wx:for="{{isSearching?searchingRecipeFoodImgUri:recipeFoodImgUri}}">
+        <view class="recipe-item" wx:for="{{isSearching?searchingRecipeFoodImgUri:recipeFoodImgUri}}">
             <view class="add-icon" bindtap='addIconTap' data-id="{{index}}">
                 <image src="../../image/add.png"></image>
             </view>
@@ -28,14 +27,23 @@
                 <image src="{{item}}"></image>
             </view>
             <view class="recipe-detail">
-                <text>{{isSearching?searchingRecipeDetail[index]:recipeDetail[index]}}</text>
+                <view>
+                    <text>{{isSearching?searchingRecipeDetail[index]:recipeDetail[index]}}</text>
+                </view>
+                <view>
+                    <text>￥{{recipeMoney[index]}}</text>
+                </view>
             </view>
             <view class="food-count">
                 <text>x{{isSearching?searchingRecipeCount[index]:recipeCount[index]}}</text>
             </view>
-            <view class="subtract-icon"  bindtap='subtractIconTap' data-id="{{index}}">
+            <view class="subtract-icon" bindtap='subtractIconTap' data-id="{{index}}">
                 <image src="../../image/subtract.png"></image>
             </view>
         </view>
     </scroll-view>
+</view>
+
+<view class="finish-selected">
+    <icon type="success" size="35" class="finish-icon" bindtap='finishSelected' />
 </view>

@@ -1,3 +1,4 @@
+var app = getApp();
 Page({
     data: {
         imgUrls: [
@@ -23,19 +24,27 @@ Page({
         recipeDetail: [
             "湛江1烧耗", "湛江12烧耗", "湛江13烧耗",
         ],
+        recipeMoney: [
+            10, 20, 30,
+        ],
         recipeCount: [
             0, 0, 0,
         ],
         isSearching: false,
         searchingRecipeFoodImgUri: [],
         searchingRecipeDetail: [],
+        searchingRecipeMoney: [],
         searchingRecipeCount: [],
         searchedIndex:[],
         searchValue: "",
+        recipeSelected: {
+            recipeFoodImgUri: [],
+            recipeDetail: [],
+            recipeMoney:[],
+            recipeCount: [],
+        },
     },
-    onLoad: function () {
 
-    },
 
     recipeKindTap: function (e) {
     
@@ -70,6 +79,7 @@ Page({
     searchIconTap: function (e) {
         var recipeFoodImgUri = [];
         var recipeDetail = [];
+        var recipeMoney = [];
         var recipeCount = [];
         var searchedIndex = [];
         if (this.data.searchValue == "") {
@@ -93,6 +103,7 @@ Page({
                 if (this.data.recipeDetail[index].indexOf(this.data.searchValue) >= 0) {
                     recipeFoodImgUri.push(this.data.recipeFoodImgUri[index]);
                     recipeDetail.push(this.data.recipeDetail[index]);
+                    recipeMoney.push(this.data.recipeMoney[index]);
                     recipeCount.push(this.data.recipeCount[index]);
                     searchedIndex.push(index);
                 }
@@ -100,6 +111,7 @@ Page({
             this.setData({
                 searchingRecipeFoodImgUri: recipeFoodImgUri,
                 searchingRecipeDetail: recipeDetail,
+                searchingRecipeMoney: recipeMoney,
                 searchingRecipeCount: recipeCount,
                 searchedIndex: searchedIndex,
             });
@@ -108,55 +120,129 @@ Page({
     },
     //缺少在搜索页面之后点击的实现
     addIconTap: function (e) {
-        console.log(e);
         var index = e.currentTarget.dataset.id;
         if (!this.data.isSearching) {
             var recipeCount = this.data.recipeCount;
+            var recipeFoodImgUri = this.data.recipeFoodImgUri;
+            var recipeDetail = this.data.recipeDetail;
+            var recipeMoney = this.data.recipeMoney;
+            var recipeSelected = this.data.recipeSelected;
             recipeCount[index] += 1;
             if (recipeCount[index] >= 10) {
                 //提示最大点10份
-                recipeCount = 10;
+                recipeCount[index] = 10;
             }
             this.setData({
                 recipeCount: recipeCount
             })
+            
+            var i = recipeSelected.recipeDetail.indexOf(recipeDetail[index]);
+            if (i < 0) {
+                recipeSelected.recipeFoodImgUri.push(recipeFoodImgUri[index]);
+                recipeSelected.recipeDetail.push(recipeDetail[index]);
+                recipeSelected.recipeMoney.push(recipeMoney[index]);
+                recipeSelected.recipeCount.push(recipeCount[index]);
+            }
+            else {
+                recipeSelected.recipeCount[i] += 1;
+            }
+            
+            this.setData({
+                recipeSelected: recipeSelected
+            })
         }
         else {
-            var recipeCount = this.data.searchingRecipeCount;
+            var recipeCount = this.data.recipeCount;
+            var recipeFoodImgUri = this.data.recipeFoodImgUri;
+            var recipeDetail = this.data.recipeDetail;
+            var recipeMoney = this.data.recipeMoney;
+            var recipeSelected = this.data.recipeSelected;
             recipeCount[index] += 1;
             if (recipeCount[index] >= 10) {
                 //提示最大点10份
-                recipeCount = 10;
+                recipeCount[index] = 10;
             }
             this.setData({
                 searchingRecipeCount: recipeCount
+            })
+            var i = recipeSelected.recipeDetail.indexOf(recipeDetail[index]);
+            if (i < 0) {
+                recipeSelected.recipeFoodImgUri.push(recipeFoodImgUri[index]);
+                recipeSelected.recipeDetail.push(recipeDetail[index]);
+                recipeSelected.recipeMoney.push(recipeMoney[index]);
+                recipeSelected.recipeCount.push(recipeCount[index]);
+            }
+            else {
+                recipeSelected.recipeCount[i] += 1;
+            }
+            this.setData({
+                recipeSelected: recipeSelected
             })
         }
     },
     subtractIconTap: function (e) {
-        console.log(e);
         var index = e.currentTarget.dataset.id;
         if (!this.data.isSearching) {
             var recipeCount = this.data.recipeCount;
+            var recipeFoodImgUri = this.data.recipeFoodImgUri;
+            var recipeDetail = this.data.recipeDetail;
+            var recipeMoney = this.data.recipeMoney;
+            var recipeSelected = this.data.recipeSelected;
             recipeCount[index] -= 1;
             if (recipeCount[index] <= 0) {
                 //提示最大点10份
-                recipeCount = 0;
+                recipeCount[index] = 0;
             }
             this.setData({
                 recipeCount: recipeCount
             })
+            var i = recipeSelected.recipeDetail.indexOf(recipeDetail[index]);
+            if (i >= 0) {
+                recipeSelected.recipeCount[i] -= 1;
+                if (recipeSelected.recipeCount[i] == 0) {
+                    recipeSelected.recipeFoodImgUri.splice(i, 1);
+                    recipeSelected.recipeDetail.splice(i, 1);
+                    recipeSelected.recipeMoney.splice(i, 1);
+                    recipeSelected.recipeCount.splice(i, 1);
+                }
+            }
+            this.setData({
+                recipeSelected: recipeSelected
+            })
         }
         else {
-            var recipeCount = this.data.searchingRecipeCount;
+            var recipeCount = this.data.recipeCount;
+            var recipeFoodImgUri = this.data.recipeFoodImgUri;
+            var recipeDetail = this.data.recipeDetail; 
+            var recipeMoney = this.data.recipeMoney;
+            var recipeSelected = this.data.recipeSelected;
             recipeCount[index] -= 1;
             if (recipeCount[index] <= 0) {
                 //提示最大点10份
-                recipeCount = 0;
+                recipeCount[index] = 0;
             }
             this.setData({
                 searchingRecipeCount: recipeCount
             })
+            var i = recipeSelected.recipeDetail.indexOf(recipeDetail[index]);
+            if (i >= 0) {
+                recipeSelected.recipeCount[i] -= 1;
+                if (recipeSelected.recipeCount[i] == 0) {
+                    recipeSelected.recipeFoodImgUri.splice(i, 1);
+                    recipeSelected.recipeDetail.splice(i, 1);
+                    recipeSelected.recipeMoney.splice(i, 1);
+                    recipeSelected.recipeCount.splice(i, 1);
+                }
+            }
+            this.setData({
+                recipeSelected: recipeSelected
+            })
         }
     },
+    finishSelected: function(e) {
+        app.globalData.recipeSelected = this.data.recipeSelected;
+        wx.switchTab({
+            url: '../toPay/toPay'
+        })
+    }
 })

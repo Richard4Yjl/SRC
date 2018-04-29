@@ -61,7 +61,6 @@ swiper {
     display: flex;
     flex-direction: column;
     width: 83%;
-    height: 405px;
 }
 .recipe-item {
     display: flex;
@@ -107,6 +106,15 @@ swiper {
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
-    justify-content: center;
     align-items: center;
+}
+.finish-selected {
+    position: absolute;
+    right: 28px;
+    bottom: 30px;
+    
+}
+.finish-icon {
+    height: 32px;
+    width: 32px;
 }
