@@ -108,13 +108,3 @@ swiper {
     flex-grow: 1;
     align-items: center;
 }
-.finish-selected {
-    position: absolute;
-    right: 28px;
-    bottom: 30px;
-    
-}
-.finish-icon {
-    height: 32px;
-    width: 32px;
-}

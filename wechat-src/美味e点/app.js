@@ -40,6 +40,7 @@ App({
         recipeDetail: [],
         recipeMoney: [],
         recipeCount: [],
+        moneyToPay:0,
     },
   }
 })

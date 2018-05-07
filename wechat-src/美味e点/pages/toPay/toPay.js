@@ -7,24 +7,40 @@ Page({
    */
   data: {
     deskID: 10,
-    moneyToPay: 0,
-    recipeFoodImgUri:[], 
-    recipeDetail:[], 
-    recipeMoney:[],
-    recipeCount: [],
+    
+    recipeSelected: {
+        recipeFoodImgUri: [],
+        recipeDetail: [],
+        recipeMoney: [],
+        recipeCount: [],
+        moneyToPay: 0,
+    },
   },
-  onLoad: function(){
-      var moneyToPay = 0;
-      for (var index in app.globalData.recipeSelected.recipeMoney) {
-          moneyToPay += app.globalData.recipeSelected.recipeMoney[index];
+  onShow: function(){
+      this.setData({
+          recipeSelected: app.globalData.recipeSelected,
+
+      })
+  },
+  onHide: function (e) {
+      app.globalData.recipeSelected = this.data.recipeSelected;
+      console.log(app.globalData.recipeSelected);
+  },
+  minusIconTap: function(e){
+      var recipeSelected = this.data.recipeSelected;
+      var index = e.currentTarget.dataset.id;
+      console.log(index);
+      recipeSelected.moneyToPay -= recipeSelected.recipeMoney[index];
+      recipeSelected.recipeCount[index] -= 1;
+      if (recipeSelected.recipeCount[index] == 0) {
+          recipeSelected.recipeFoodImgUri.splice(index, 1);
+          recipeSelected.recipeDetail.splice(index, 1);
+          recipeSelected.recipeMoney.splice(index, 1);
+          recipeSelected.recipeCount.splice(index, 1);
       }
       this.setData({
-          recipeFoodImgUri: app.globalData.recipeSelected.recipeFoodImgUri,
-          recipeDetail: app.globalData.recipeSelected.recipeDetail,
-          recipeMoney: app.globalData.recipeSelected.recipeMoney,
-          recipeCount: app.globalData.recipeSelected.recipeCount,
-          moneyToPay: moneyToPay,
-      })
+        recipeSelected: recipeSelected,
+      });
   }
  
 })
