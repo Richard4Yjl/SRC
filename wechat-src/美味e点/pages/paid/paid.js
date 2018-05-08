@@ -1,3 +1,4 @@
+var app = getApp();
 Page({
 
   /**
@@ -5,24 +6,14 @@ Page({
    */
   data: {
     deskID: 10,
-    moneyToPay: 100,
-    recipeList:[
-        {
-            foodImgUrl: '../../image/food.png',
-            detail: "湛江烧耗",
-            count: 1,
-        },
-        {
-            foodImgUrl: '../../image/food.png',
-            detail: "湛江烧耗",
-            count: 2,
-        },
-        {
-            foodImgUrl: '../../image/food.png',
-            detail: "湛江烧耗",
-            count: 3,
-        }
-    ]
-  }
+    recipeSelected:[],
+  },
+    onLoad: function(e) {
+        var index = e.selectedIndex;
+
+        this.setData({
+            recipeSelected: app.globalData.expenseTracker[index]
+        })
+    }
  
 })

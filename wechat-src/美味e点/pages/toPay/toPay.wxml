@@ -32,6 +32,6 @@
     </view>
 </view>
 
-<button class="confirm-button">
+<button class="confirm-button" bindtap='confirmButtonTap'>
     <text>确认付款</text>
 </button>
