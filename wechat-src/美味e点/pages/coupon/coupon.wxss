@@ -1,11 +1,54 @@
+.balance-money {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+.balance, .money-to-pay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #aaa;
+}
+.balance {
+    width: 50%;
+}
+.money-to-pay {
+    flex-grow: 1;
+}
 .coupon-container {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
 }
+checkbox-group {
+    display: block;
+    width: 100%;
+}
+label {
+    margin: 5px;
+}
+checkbox {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
 .coupon-image {
-    width: 350px;
     height: 100px;
-    margin-top: 15px;
+    margin-top: 5px;
+    display: flex;
+    flex-shrink: 1;
+
+}
+.confirm-button {
+    width: 70%;
+    margin-top: 10px;
+}
+.buttonNotDisplay {
+    display: false;
+}
+.buttonDisplay{
+    display: true;
 }

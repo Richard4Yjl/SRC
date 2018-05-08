@@ -3,7 +3,7 @@
         <text>桌号: {{deskID}}</text>
     </view>
     <view class="money-to-pay">
-        <text>结算: {{moneyToPay}}</text>
+        <text>结算: {{recipeSelected.moneyToPay}}</text>
     </view>
 </view>
 
@@ -11,19 +11,22 @@
     <view class="recipe-title">
         <text>您的菜谱</text>
     </view>
-    <view class="recipe-item" wx:for="{{recipeList}}">
+        <view class="recipe-item" wx:for="{{recipeSelected.recipeDetail}}">
         <view class="food-icon">
-            <image src="{{item.foodImgUrl}}"></image>
+            <image src="{{recipeSelected.recipeFoodImgUri[index]}}"></image>
         </view>
         <view class="recipe-detail">
-            <text>{{item.detail}}</text>
+            <view>
+                <text>{{item}}</text>
+            </view>
+            <view>
+                <text>￥{{recipeSelected.recipeMoney[index]}}</text>
+            </view>
         </view>
         <view class="food-count">
-            <text>x{{item.count}}</text>
+            <text>x{{recipeSelected.recipeCount[index]}}</text>
         </view>
-        <view class="minus-icon">
-            <image src="../../image/minus.png"></image>
-        </view>
+
     </view>
 </view>
 

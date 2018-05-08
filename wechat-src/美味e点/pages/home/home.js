@@ -35,19 +35,53 @@ Page({
         searchingRecipeDetail: [],
         searchingRecipeMoney: [],
         searchingRecipeCount: [],
-        searchedIndex:[],
+        searchedIndex: [],
         searchValue: "",
         recipeSelected: {
             recipeFoodImgUri: [],
             recipeDetail: [],
-            recipeMoney:[],
+            recipeMoney: [],
             recipeCount: [],
+            moneyToPay: 0,
         },
     },
+    onShow: function () {
+        if (app.globalData.isPaying) {
+            this.setData({
+                recipeSelected: app.globalData.recipeSelected,
+            });
+            
+            var recipeSelected = this.data.recipeSelected;
+            var recipeDetail = this.data.recipeDetail;
+            var recipeCount = this.data.recipeCount;
 
+            for (var index in recipeCount) {
+                recipeCount[index] = 0;
+            }
+            this.setData({
+                recipeCount: recipeCount,
+            })
+            for (var index in recipeSelected.recipeDetail) {
+                var i = recipeDetail.indexOf(recipeSelected.recipeDetail[index]);
+                recipeCount[i] = recipeSelected.recipeCount[index];
+            }
+            this.setData({
+                recipeCount: recipeCount
+            })
+        }
+        else {
+            var recipeCount = this.data.recipeCount;
+            for (var index in recipeCount) {
+                recipeCount[index] = 0;
+            }
+            this.setData({
+                recipeCount: recipeCount,
+            })
+        }
+    },
 
     recipeKindTap: function (e) {
-    
+
         this.setData({
             kindSelected: -1
         });
@@ -89,7 +123,7 @@ Page({
             searchedIndex = this.data.searchedIndex;
             recipeCount = this.data.recipeCount;
             for (var i in searchedIndex) {
-                recipeCount[searchedIndex[i]] =  this.data.searchingRecipeCount[i];
+                recipeCount[searchedIndex[i]] = this.data.searchingRecipeCount[i];
             }
             this.setData({
                 recipeCount: recipeCount
@@ -115,12 +149,12 @@ Page({
                 searchingRecipeCount: recipeCount,
                 searchedIndex: searchedIndex,
             });
-           
+
         }
     },
     //缺少在搜索页面之后点击的实现
     addIconTap: function (e) {
-        var index = e.currentTarget.dataset.id;
+        var index = e.currentTarget.dataset.id; //在列表中的下标
         if (!this.data.isSearching) {
             var recipeCount = this.data.recipeCount;
             var recipeFoodImgUri = this.data.recipeFoodImgUri;
@@ -135,18 +169,20 @@ Page({
             this.setData({
                 recipeCount: recipeCount
             })
-            
-            var i = recipeSelected.recipeDetail.indexOf(recipeDetail[index]);
+
+            var i = recipeSelected.recipeDetail.indexOf(recipeDetail[index]);//selected中的下标
             if (i < 0) {
                 recipeSelected.recipeFoodImgUri.push(recipeFoodImgUri[index]);
                 recipeSelected.recipeDetail.push(recipeDetail[index]);
                 recipeSelected.recipeMoney.push(recipeMoney[index]);
                 recipeSelected.recipeCount.push(recipeCount[index]);
+                recipeSelected.moneyToPay += recipeMoney[index];
             }
             else {
                 recipeSelected.recipeCount[i] += 1;
+                recipeSelected.moneyToPay += recipeSelected.recipeMoney[i];
             }
-            
+
             this.setData({
                 recipeSelected: recipeSelected
             })
@@ -171,9 +207,11 @@ Page({
                 recipeSelected.recipeDetail.push(recipeDetail[index]);
                 recipeSelected.recipeMoney.push(recipeMoney[index]);
                 recipeSelected.recipeCount.push(recipeCount[index]);
+                recipeSelected.moneyToPay += recipeMoney[index];
             }
             else {
                 recipeSelected.recipeCount[i] += 1;
+                recipeSelected.moneyToPay += recipeSelected.recipeMoney[i];
             }
             this.setData({
                 recipeSelected: recipeSelected
@@ -205,6 +243,7 @@ Page({
                     recipeSelected.recipeMoney.splice(i, 1);
                     recipeSelected.recipeCount.splice(i, 1);
                 }
+                recipeSelected.moneyToPay -= recipeMoney[index];
             }
             this.setData({
                 recipeSelected: recipeSelected
@@ -213,7 +252,7 @@ Page({
         else {
             var recipeCount = this.data.recipeCount;
             var recipeFoodImgUri = this.data.recipeFoodImgUri;
-            var recipeDetail = this.data.recipeDetail; 
+            var recipeDetail = this.data.recipeDetail;
             var recipeMoney = this.data.recipeMoney;
             var recipeSelected = this.data.recipeSelected;
             recipeCount[index] -= 1;
@@ -233,16 +272,24 @@ Page({
                     recipeSelected.recipeMoney.splice(i, 1);
                     recipeSelected.recipeCount.splice(i, 1);
                 }
+                recipeSelected.moneyToPay -= recipeMoney[index];
             }
             this.setData({
                 recipeSelected: recipeSelected
             })
         }
     },
-    finishSelected: function(e) {
+    onHide: function (e) {
         app.globalData.recipeSelected = this.data.recipeSelected;
-        wx.switchTab({
-            url: '../toPay/toPay'
+        var recipeSelected = {
+            recipeFoodImgUri: [],
+            recipeDetail: [],
+            recipeMoney: [],
+            recipeCount: [],
+            moneyToPay: 0,
+        };
+        this.setData({
+            recipeSelected: recipeSelected,
         })
     }
 })

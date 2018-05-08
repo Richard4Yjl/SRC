@@ -40,6 +40,11 @@ App({
         recipeDetail: [],
         recipeMoney: [],
         recipeCount: [],
+        moneyToPay:0,
     },
+    isPaying: false,
+    payRequestCoupon: false,
+    expenseTracker:[],
+    balance: 0,
   }
 })

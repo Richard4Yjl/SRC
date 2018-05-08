@@ -44,6 +44,3 @@
     </scroll-view>
 </view>
 
-<view class="finish-selected">
-    <icon type="success" size="35" class="finish-icon" bindtap='finishSelected' />
-</view>

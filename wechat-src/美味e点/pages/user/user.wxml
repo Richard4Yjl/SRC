@@ -28,10 +28,9 @@
             <text>订单详情</text>
         </view>
         <scroll-view class="order-list" scroll-y >
-            <view wx:for="{{orderList}}" class="order-list-item">
-                <text class="order-list-status">{{item.status}}</text>
-                <text class="order-list-recipe">{{item.recipe}}</text>
-                <text class="order-list-time">{{item.time}}</text>
+            <view wx:for="{{orderList}}" class="order-list-item" >
+                <text class="order-list-recipe" bindtap='orderListItemTap' data-id='{{index}}'>{{item.recipeDetail}}</text>
+                <text class="order-list-time">{{item.recipeTime}}</text>
             </view>
         </scroll-view>
     </view>

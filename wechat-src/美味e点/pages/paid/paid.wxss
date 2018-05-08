@@ -49,10 +49,7 @@
     height: 50px;
     width: 50px;
 }
-.minus-icon image {
-    height: 32px;
-    width: 32px;
-}
+
 .food-count {
     height: 62px;
     width: 62px;
