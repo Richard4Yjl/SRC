@@ -1,11 +1,11 @@
 {
     "pages": [
         "pages/home/home",
+        "pages/balances/balances",
         "pages/user/user",
         "pages/toPay/toPay",
         "pages/shopActivities/shopActivities",
         "pages/reportFeedback/reportFeedback",
-        "pages/balances/balances",
         "pages/coupon/coupon",
         "pages/report/report",
         "pages/paid/paid"

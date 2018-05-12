@@ -13,7 +13,7 @@
         </view>
     </view>
     <view class="money-coupon-feedback">
-        <view class="money">
+        <view class="money" bindtap="balances">
             <text>余额</text>
         </view>
         <view class="coupon">
