@@ -76,5 +76,10 @@ Page({
         wx.navigateTo({
             url: './../paid/paid?selectedIndex=' + index,
         })
+    },
+    balances: function(e) {
+        wx.navigateTo({
+          url: '../balances/balances',
+        })
     }
 })
