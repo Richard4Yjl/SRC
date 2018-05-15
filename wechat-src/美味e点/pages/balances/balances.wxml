@@ -6,6 +6,6 @@
         <button type="primary" bindtap="modalinput">充值</button>
     </view>
     <modal hidden="{{hiddenmodalput}}" title="请输入充值金额" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">  
-        <input type="number" bindinput="balancesinput" value="{{recharge_input}}" auto-focus/>  
+        <input class="recharge-input" type="number" bindinput="balancesinput" value="{{recharge_input}}" auto-focus/>  
     </modal>  
 </view>
