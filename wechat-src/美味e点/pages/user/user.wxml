@@ -14,7 +14,7 @@
     </view>
     <view class="money-coupon-feedback">
         <view class="money" bindtap="balances">
-            <text>余额</text>
+            <text>余额: {{balance}}</text>
         </view>
         <view class="coupon">
             <text>优惠券</text>
@@ -23,13 +23,16 @@
             <text>举报反馈</text>
         </view>
     </view>
-    <view class="order-list-container" >
+    <view class="order-list-container">
         <view class="order-list-title">
             <text>订单详情</text>
         </view>
-        <scroll-view class="order-list" scroll-y >
-            <view wx:for="{{orderList}}" class="order-list-item" >
-                <text class="order-list-recipe" bindtap='orderListItemTap' data-id='{{index}}'>{{item.recipeDetail}}</text>
+        <scroll-view class="order-list" scroll-y>
+            <view wx:for="{{orderList}}" class="order-list-item">
+                <view bindtap='orderListItemTap'  class="order-list-recipe" data-id='{{index}}'>
+                    <text>{{item.recipeDetail}}</text>
+                </view>
+
                 <text class="order-list-time">{{item.recipeTime}}</text>
             </view>
         </scroll-view>

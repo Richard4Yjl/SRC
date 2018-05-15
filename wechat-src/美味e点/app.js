@@ -45,6 +45,9 @@ App({
     isPaying: false,
     payRequestCoupon: false,
     expenseTracker:[],
-    balance: 0,
+    balance: 100,
+    deskID:0,
+    restaurantName:null, 
+
   }
 })

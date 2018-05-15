@@ -32,6 +32,14 @@ Page({
             duration: 1000,
             mask: true
         });
+        if (this.data.moneyToPay > this.data.balance ){
+            //支付剩余的
+            app.globalData.balance = 0;
+            //支付
+        }
+        else {
+            app.globalData.balance -= this.data.moneyToPay;
+        }
         app.globalData.expenseTracker.push(app.globalData.recipeSelected);
         app.globalData.recipeSelected = {
             recipeFoodImgUri: [],
@@ -40,8 +48,7 @@ Page({
             recipeCount: [],
             moneyToPay: 0,
         };
-        console.log("coupon");
-        console.log(app.globalData.recipeSelected)
+
         app.globalData.isPaying = false;
         setTimeout(function () {
             wx.switchTab({

@@ -6,7 +6,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        deskID: 10,
+        deskID: 0,
 
         recipeSelected: {
             recipeFoodImgUri: [],
@@ -15,6 +15,11 @@ Page({
             recipeCount: [],
             moneyToPay: 0,
         },
+    },
+    onLoad: function(e) {
+        this.setData({
+            deskID: app.globalData.deskID
+        })
     },
     onShow: function () {
 

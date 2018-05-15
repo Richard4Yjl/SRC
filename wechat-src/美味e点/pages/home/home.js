@@ -45,6 +45,22 @@ Page({
             moneyToPay: 0,
         },
     },
+    onLoad:function(e) {
+        wx.scanCode({
+            onlyFromCamera: true,
+            success: (res) => {
+                var result = res.result;
+                app.globalData.deskID = result.substring(0,result.indexOf(","));
+                app.globalData.restaurantName = result.substring(result.indexOf(",")+1);
+            },
+            fail: (res)=> {
+
+            },
+            complete: (res) => {
+
+            }
+        })
+    },
     onShow: function () {
         if (app.globalData.isPaying) {
             this.setData({
