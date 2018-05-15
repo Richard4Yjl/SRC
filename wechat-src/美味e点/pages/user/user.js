@@ -63,7 +63,8 @@ Page({
             orderList.push(orderListItem);
         }
         this.setData({
-            orderList: orderList
+          orderList: orderList,
+          balance: app.globalData.balance,
         })
     },
     getUserInfo: function (e) {

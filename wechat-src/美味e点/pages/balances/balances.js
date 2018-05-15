@@ -36,14 +36,13 @@ Page({
       var rsNum = regNum.exec(this.data.recharge_input);
       
       if (rsNum) {
-        var temp_money = parseInt(this.data.recharge_input);
-        var new_balance = this.data.balance + temp_money;
-          this.setData({
-            recharge_result: "充值成功",
-            recharge_input: "",
-            balance: new_balance,
-            hiddenmodalput: true,
-          });
+        app.globalData.balance = app.globalData.balance + parseInt(this.data.recharge_input);
+        this.setData({
+          recharge_result: "充值成功",
+          balance: app.globalData.balance,
+          recharge_input: "",
+          hiddenmodalput: true,
+        });
       } else {
           this.setData({
             recharge_result: "请输入有效数字",
