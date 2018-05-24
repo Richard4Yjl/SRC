@@ -4,7 +4,6 @@ Page({
     data: {
         balance: 0,
         recharge_input: "",
-        recharge_result: "",
         hiddenmodalput: true,
     },
     onLoad: function (options) {
@@ -38,10 +37,15 @@ Page({
         if (rsNum) {
             app.globalData.balance = app.globalData.balance + parseInt(this.data.recharge_input);
             this.setData({
-                recharge_result: "充值成功",
                 balance: app.globalData.balance,
                 recharge_input: "",
                 hiddenmodalput: true,
+            });
+            wx.showToast({
+              title: '充值成功',
+              icon: 'success',
+              duration: 1000,
+              mask: true
             });
             setTimeout(function () {
                 wx.navigateBack({
@@ -52,9 +56,15 @@ Page({
         }
         else {
             this.setData({
-                recharge_result: "请输入有效数字",
                 recharge_input: "",
                 hiddenmodalput: true,
+            });
+
+            wx.showToast({
+              title: '请输入有效数字',
+              image: './../../image/warning.png',
+              duration: 1000,
+              mask: true
             });
         }
     },

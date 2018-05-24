@@ -26,36 +26,40 @@ Page({
         
     },
     confirmButtonTap: function () {
-        wx.showToast({
-            title: '成功',
-            icon: 'succes',
+        
+        if (this.data.moneyToPay > this.data.balance ){
+          wx.showToast({
+            title: '余额不足',
+            image: './../../image/warning.png',
             duration: 1000,
             mask: true
-        });
-        if (this.data.moneyToPay > this.data.balance ){
-            //支付剩余的
-            app.globalData.balance = 0;
-            //支付
+          });
         }
         else {
-            app.globalData.balance -= this.data.moneyToPay;
-        }
-        app.globalData.expenseTracker.push(app.globalData.recipeSelected);
-        app.globalData.recipeSelected = {
+          wx.showToast({
+            title: '支付成功',
+            icon: 'success',
+            duration: 1000,
+            mask: true
+          });
+          app.globalData.balance -= this.data.moneyToPay;
+
+          app.globalData.expenseTracker.push(app.globalData.recipeSelected);
+          app.globalData.recipeSelected = {
             recipeFoodImgUri: [],
             recipeDetail: [],
             recipeMoney: [],
             recipeCount: [],
             moneyToPay: 0,
-        };
+          };
 
-        app.globalData.isPaying = false;
-        setTimeout(function () {
-            wx.switchTab({
-                url: './../user/user',
-            })
-        }, 1500);
-
+          app.globalData.isPaying = false;
+      }
+      setTimeout(function () {
+        wx.switchTab({
+          url: './../user/user',
+        })
+      }, 2000);
     }
 
 })
