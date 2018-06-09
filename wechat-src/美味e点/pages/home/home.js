@@ -50,14 +50,31 @@ Page({
             onlyFromCamera: true,
             success: (res) => {
                 var result = res.result;
+                console.log(result);
                 app.globalData.deskID = result.substring(0,result.indexOf(","));
                 app.globalData.restaurantName = result.substring(result.indexOf(",")+1);
+                app.golbalData.merchant_id = JSON.parse(result)["merchant_id"];
+                app.globalData.seat_id = JSON.parse(result)["seat_id"];
+                app.globalData.number = JSON.parse(result)["number"];
             },
             fail: (res)=> {
 
             },
             complete: (res) => {
 
+            }
+        })
+        wx.request({
+            url: 'https://www.sysu-easyorder.top/foods?merchant_id='+app.globalData.merchant_id, 
+            data: {
+                x: '',
+                y: ''
+            },
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function (res) {
+                console.log(res.data)
             }
         })
     },
