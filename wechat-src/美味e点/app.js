@@ -48,6 +48,8 @@ App({
     balance: 100,
     deskID:0,
     restaurantName:null, 
-
+    merchant_id: 3,
+    seat_id: 11,
+    number: "1C",
   }
 })
