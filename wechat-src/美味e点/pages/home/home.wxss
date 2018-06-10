@@ -39,12 +39,15 @@ swiper {
     flex-direction: row;
     overflow: hidden;
 }
+/*突然说不要种类*/
 .recipe-kind {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 15%;
+    /*width: 15%;*/
+    width: 0;
     border-right: 1px solid #aaa;
+    
 }
 .recipe-kind-text {
     border: 1px solid #ccc;
@@ -60,7 +63,8 @@ swiper {
 .recipe-detail-container {
     display: flex;
     flex-direction: column;
-    width: 83%;
+    /*width: 83%;*/
+    width: 100%;
 }
 .recipe-item {
     display: flex;
@@ -106,5 +110,6 @@ swiper {
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
-    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }

@@ -16,20 +16,12 @@ Page({
             "肉类", "蔬菜", "小吃", "饮料", "其他"
         ],
 
-        recipeFoodImgUri: [
-            '../../image/food.png',
-            '../../image/food.png',
-            '../../image/food.png',
-        ],
-        recipeDetail: [
-            "湛江1烧耗", "湛江12烧耗", "湛江13烧耗",
-        ],
-        recipeMoney: [
-            10, 20, 30,
-        ],
-        recipeCount: [
-            0, 0, 0,
-        ],
+        recipeFoodImgUri: [],
+        recipeDetail: [],
+        recipeMoney: [],
+        recipeCount: [],
+        recipeFoodID: [],
+        recipeFoodDescription: [],
         isSearching: false,
         searchingRecipeFoodImgUri: [],
         searchingRecipeDetail: [],
@@ -42,6 +34,8 @@ Page({
             recipeDetail: [],
             recipeMoney: [],
             recipeCount: [],
+            recipeFoodID: [],
+            recipeFoodDescription: [],
             moneyToPay: 0,
         },
     },
@@ -51,9 +45,8 @@ Page({
             success: (res) => {
                 var result = res.result;
                 console.log(result);
-                app.globalData.deskID = result.substring(0,result.indexOf(","));
-                app.globalData.restaurantName = result.substring(result.indexOf(",")+1);
-                app.golbalData.merchant_id = JSON.parse(result)["merchant_id"];
+                
+                app.globalData.merchant_id = JSON.parse(result)["merchant_id"];
                 app.globalData.seat_id = JSON.parse(result)["seat_id"];
                 app.globalData.number = JSON.parse(result)["number"];
             },
@@ -64,6 +57,7 @@ Page({
 
             }
         })
+        var that = this;
         wx.request({
             url: 'https://www.sysu-easyorder.top/foods?merchant_id='+app.globalData.merchant_id, 
             data: {
@@ -74,38 +68,34 @@ Page({
                 'content-type': 'application/json' // 默认值
             },
             success: function (res) {
-                console.log(res.data)
+                console.log(res.data.data)
+                var data = res.data.data;
+                var recipeDetail = [];
+                var recipeMoney = [];
+                var recipeFoodImgUri = [];
+                var recipeCount = [];
+                var recipeFoodID = [];
+                var recipeFoodDescription = [];
+                for (var index in data) {
+                    recipeDetail.push(data[index]['name']);
+                    recipeMoney.push(data[index]['price']);
+                    recipeFoodImgUri.push('../../image/food.png');
+                    recipeCount.push(0);
+                    recipeFoodID.push(data[index]['food_id']);
+                    recipeFoodDescription.push(data[index]['description']);
+                }
+                
+                that.setData({
+                    recipeDetail: recipeDetail,
+                    recipeMoney: recipeMoney,
+                    recipeFoodImgUri: recipeFoodImgUri,
+                    recipeCount: recipeCount,
+                    recipeFoodID: recipeFoodID,
+                    recipeFoodDescription: recipeFoodDescription
+                })
             }
         })
-        wx.request({
-            url: 'https://www.sysu-easyorder.top/orders',
-            data: {
-                "order_id": null,
-                "status": 0,
-                "seat_id": 1,
-                "customer_id": 1,
-                "merchant_id": 3,
-                "order_time": "2018-01-01T12:00:00+08:00",
-                "complete_time": "2018-01-02T12:00:00+08:00",
-                "foods": [
-                    {
-                        "food_id": 1,
-                        "name": "那碗粉",
-                        "description": "那碗粉。。。",
-                        "price": "9.99",
-                        "merchant_id": 3,
-                        "amount": 2
-                    },
-                ]
-            },
-            method: 'POST',
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            success: function (res) {
-                console.log(res.data)
-            }
-        })
+        
     },
     onShow: function () {
         if (app.globalData.isPaying) {
@@ -116,6 +106,8 @@ Page({
             var recipeSelected = this.data.recipeSelected;
             var recipeDetail = this.data.recipeDetail;
             var recipeCount = this.data.recipeCount;
+            var recipeFoodID = this.data.recipeFoodID;
+            var recipeFoodDescription = this.data.recipeFoodDescription;
 
             for (var index in recipeCount) {
                 recipeCount[index] = 0;
@@ -141,7 +133,8 @@ Page({
             })
         }
     },
-
+    //已作废，突然说不要分类和搜索了
+    /*
     recipeKindTap: function (e) {
 
         this.setData({
@@ -167,6 +160,7 @@ Page({
         });
 
     },
+    
     searchInput: function (e) {
         this.setData({
             searchValue: e.detail.value
@@ -214,6 +208,7 @@ Page({
 
         }
     },
+    */
     //缺少在搜索页面之后点击的实现
     addIconTap: function (e) {
         var index = e.currentTarget.dataset.id; //在列表中的下标
@@ -223,6 +218,8 @@ Page({
             var recipeDetail = this.data.recipeDetail;
             var recipeMoney = this.data.recipeMoney;
             var recipeSelected = this.data.recipeSelected;
+            var recipeFoodID = this.data.recipeFoodID;
+            var recipeFoodDescription = this.data.recipeFoodDescription;
             recipeCount[index] += 1;
             if (recipeCount[index] >= 10) {
                 //提示最大点10份
@@ -238,6 +235,8 @@ Page({
                 recipeSelected.recipeDetail.push(recipeDetail[index]);
                 recipeSelected.recipeMoney.push(recipeMoney[index]);
                 recipeSelected.recipeCount.push(recipeCount[index]);
+                recipeSelected.recipeFoodID.push(recipeFoodID[index]);
+                recipeSelected.recipeFoodDescription.push(recipeFoodDescription[index]);
                 recipeSelected.moneyToPay += recipeMoney[index];
             }
             else {
@@ -255,6 +254,8 @@ Page({
             var recipeDetail = this.data.recipeDetail;
             var recipeMoney = this.data.recipeMoney;
             var recipeSelected = this.data.recipeSelected;
+            var recipeFoodID = this.data.recipeFoodID;
+            var recipeFoodDescription = this.data.recipeFoodDescription;
             recipeCount[index] += 1;
             if (recipeCount[index] >= 10) {
                 //提示最大点10份
@@ -269,6 +270,8 @@ Page({
                 recipeSelected.recipeDetail.push(recipeDetail[index]);
                 recipeSelected.recipeMoney.push(recipeMoney[index]);
                 recipeSelected.recipeCount.push(recipeCount[index]);
+                recipeSelected.recipeFoodID.push(recipeFoodID[index]);
+                recipeSelected.recipeFoodDescription.push(recipeFoodDescription[index]);
                 recipeSelected.moneyToPay += recipeMoney[index];
             }
             else {
@@ -287,6 +290,8 @@ Page({
             var recipeFoodImgUri = this.data.recipeFoodImgUri;
             var recipeDetail = this.data.recipeDetail;
             var recipeMoney = this.data.recipeMoney;
+            var recipeFoodID = this.data.recipeFoodID;
+            var recipeFoodDescription = this.data.recipeFoodDescription;
             var recipeSelected = this.data.recipeSelected;
             recipeCount[index] -= 1;
             if (recipeCount[index] <= 0) {
@@ -304,6 +309,8 @@ Page({
                     recipeSelected.recipeDetail.splice(i, 1);
                     recipeSelected.recipeMoney.splice(i, 1);
                     recipeSelected.recipeCount.splice(i, 1);
+                    recipeSelected.recipeFoodID.splice(i, 1);
+                    recipeSelected.recipeFoodDescription.splice(i, 1);
                 }
                 recipeSelected.moneyToPay -= recipeMoney[index];
             }
@@ -316,6 +323,8 @@ Page({
             var recipeFoodImgUri = this.data.recipeFoodImgUri;
             var recipeDetail = this.data.recipeDetail;
             var recipeMoney = this.data.recipeMoney;
+            var recipeFoodID = this.data.recipeFoodID;
+            var recipeFoodDescription = this.data.recipeFoodDescription;
             var recipeSelected = this.data.recipeSelected;
             recipeCount[index] -= 1;
             if (recipeCount[index] <= 0) {
@@ -333,6 +342,8 @@ Page({
                     recipeSelected.recipeDetail.splice(i, 1);
                     recipeSelected.recipeMoney.splice(i, 1);
                     recipeSelected.recipeCount.splice(i, 1);
+                    recipeSelected.recipeFoodID.splice(i, 1);
+                    recipeSelected.recipeFoodDescription.splice(i, 1);
                 }
                 recipeSelected.moneyToPay -= recipeMoney[index];
             }
@@ -343,11 +354,14 @@ Page({
     },
     onHide: function (e) {
         app.globalData.recipeSelected = this.data.recipeSelected;
+        console.log(this.data.recipeSelected);
         var recipeSelected = {
             recipeFoodImgUri: [],
             recipeDetail: [],
             recipeMoney: [],
             recipeCount: [],
+            recipeFoodID: [],
+            recipeFoodDescription: [],
             moneyToPay: 0,
         };
         this.setData({

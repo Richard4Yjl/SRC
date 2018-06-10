@@ -12,12 +12,13 @@
 </view>
 
 <view class="recipe-container">
+<!--
     <view class="recipe-kind">
         <view class="recipe-kind-text {{kindSelected==index?'recipe-selected':''}}" wx:for="{{recipeKind}}" bindtap='recipeKindTap' data-id='{{index}}'>
             <text>{{item}}</text>
         </view>
     </view>
-
+-->
     <scroll-view class="recipe-detail-container" scroll-y>
         <view class="recipe-item" wx:for="{{isSearching?searchingRecipeFoodImgUri:recipeFoodImgUri}}">
             <view class="add-icon" bindtap='addIconTap' data-id="{{index}}">
