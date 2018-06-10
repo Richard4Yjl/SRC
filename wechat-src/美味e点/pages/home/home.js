@@ -77,6 +77,35 @@ Page({
                 console.log(res.data)
             }
         })
+        wx.request({
+            url: 'https://www.sysu-easyorder.top/orders',
+            data: {
+                "order_id": null,
+                "status": 0,
+                "seat_id": 1,
+                "customer_id": 1,
+                "merchant_id": 3,
+                "order_time": "2018-01-01T12:00:00+08:00",
+                "complete_time": "2018-01-02T12:00:00+08:00",
+                "foods": [
+                    {
+                        "food_id": 1,
+                        "name": "那碗粉",
+                        "description": "那碗粉。。。",
+                        "price": "9.99",
+                        "merchant_id": 3,
+                        "amount": 2
+                    },
+                ]
+            },
+            method: 'POST',
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function (res) {
+                console.log(res.data)
+            }
+        })
     },
     onShow: function () {
         if (app.globalData.isPaying) {
