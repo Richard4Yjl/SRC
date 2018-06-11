@@ -33,8 +33,12 @@ App({
       }
     })
   },
+  onHide: function() {
+        this.globalData.throughQRCode = false;
+  },
   globalData: {
     userInfo: null,
+    throughQRCode: true,
     recipeSelected: {
         recipeFoodImgUri: [],
         recipeDetail: [],

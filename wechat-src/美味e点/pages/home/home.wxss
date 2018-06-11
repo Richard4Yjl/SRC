@@ -27,7 +27,12 @@ swiper {
     margin-left: 10px;
     margin-right: 5px;
     width: 83%;
-    height: 10px;
+    height: 32px;
+    background-color: #fafafa;
+    font-size: 32rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .recipe-container {
@@ -65,6 +70,12 @@ swiper {
     flex-direction: column;
     /*width: 83%;*/
     width: 100%;
+}
+.recipe-detail-container-notScanQRCode {
+    display: flex;
+    flex-direction: column;
+    /*width: 83%;*/
+    width:0;
 }
 .recipe-item {
     display: flex;

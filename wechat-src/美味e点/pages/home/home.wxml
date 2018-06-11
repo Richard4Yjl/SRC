@@ -7,7 +7,7 @@
 </swiper>
 
 <view class="search-container">
-    <input class="search-input" value="{{searchValue}}" bindinput="searchInput" />
+    <input class="search-input" value="{{searchValue}}" bindinput="searchInput" placeholder="输入菜名搜索"/>
     <icon class="search-cion" size='25' type='search' bindtap='searchIconTap'></icon>
 </view>
 
@@ -19,7 +19,7 @@
         </view>
     </view>
 -->
-    <scroll-view class="recipe-detail-container" scroll-y>
+    <scroll-view  class="{{throughQRCode?recipe-detail-container:recipe-detail-container-notScanQRCode}}" scroll-y>
         <view class="recipe-item" wx:for="{{isSearching?searchingRecipeFoodImgUri:recipeFoodImgUri}}">
             <view class="add-icon" bindtap='addIconTap' data-id="{{index}}">
                 <image src="../../image/add.png"></image>
