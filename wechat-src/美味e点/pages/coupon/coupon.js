@@ -45,14 +45,7 @@ Page({
             // 发送订单
             var recipeSelected = app.globalData.recipeSelected;
             var foods = [];
-            var food = {
-                "food_id": 1,
-                "name": "那碗粉",
-                "description": "那碗粉。。。",
-                "price": "9.99",
-                "merchant_id": app.globalData.merchant_id,
-                "amount": 2
-            };
+       
             for (var index in recipeSelected) {
                 var food = {
                     "food_id": recipeSelected.recipeFoodID[index],
@@ -82,6 +75,9 @@ Page({
                 },
                 success: function (res) {
                     console.log("发送完成");
+                },
+                fail: function(res) {
+                    console.log("发送失败");
                 }
             })
 

@@ -44,8 +44,6 @@ Page({
             onlyFromCamera: true,
             success: (res) => {
                 var result = res.result;
-                console.log(result);
-                
                 app.globalData.merchant_id = JSON.parse(result)["merchant_id"];
                 app.globalData.seat_id = JSON.parse(result)["seat_id"];
                 app.globalData.number = JSON.parse(result)["number"];
