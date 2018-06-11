@@ -44,18 +44,21 @@ Page({
             });
             // 发送订单
             var recipeSelected = app.globalData.recipeSelected;
+            console.log(recipeSelected);
             var foods = [];
             for (var index in recipeSelected) {
                 var food = {
-                    "food_id": recipeSelected.recipeFoodID[index],
-                    "name": recipeSelected.recipeDetail[index],
-                    "description": recipeSelected.recipeFoodDescription[index],
-                    "price": recipeSelected.recipeMoney[index],
+                    "food_id": recipeSelected[index].recipeFoodID,
+                    "name": recipeSelected[index].recipeDetail,
+                    "description": recipeSelected[index].recipeFoodDescription,
+                    "price": recipeSelected[index].recipeMoney,
                     "merchant_id": app.globalData.merchant_id,
-                    "amount": recipeSelected.recipeCount[index]
+                    "amount": recipeSelected[index].recipeCount
                 };
+
                 foods.push(food);
             }
+            console.log(foods);
             wx.request({
                 url: 'https://www.sysu-easyorder.top/orders',
                 data: {
