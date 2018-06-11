@@ -45,7 +45,6 @@ Page({
             // 发送订单
             var recipeSelected = app.globalData.recipeSelected;
             var foods = [];
-       
             for (var index in recipeSelected) {
                 var food = {
                     "food_id": recipeSelected.recipeFoodID[index],
@@ -74,10 +73,7 @@ Page({
                     'content-type': 'application/json' // 默认值
                 },
                 success: function (res) {
-                    console.log("发送完成");
-                },
-                fail: function(res) {
-                    console.log("发送失败");
+                    console.log(res);
                 }
             })
 

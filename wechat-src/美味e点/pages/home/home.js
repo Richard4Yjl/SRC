@@ -66,7 +66,6 @@ Page({
                 'content-type': 'application/json' // 默认值
             },
             success: function (res) {
-                console.log(res.data.data)
                 var data = res.data.data;
                 var recipeDetail = [];
                 var recipeMoney = [];
@@ -352,7 +351,6 @@ Page({
     },
     onHide: function (e) {
         app.globalData.recipeSelected = this.data.recipeSelected;
-        console.log(this.data.recipeSelected);
         var recipeSelected = {
             recipeFoodImgUri: [],
             recipeDetail: [],
