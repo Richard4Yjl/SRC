@@ -44,9 +44,9 @@ Page({
             });
             // 发送订单
             var recipeSelected = app.globalData.recipeSelected;
-            console.log(recipeSelected);
+            
             var foods = [];
-            for (var index in recipeSelected) {
+            for (var index in recipeSelected.length) {
                 var food = {
                     "food_id": recipeSelected[index].recipeFoodID,
                     "name": recipeSelected[index].recipeDetail,
@@ -55,7 +55,7 @@ Page({
                     "merchant_id": app.globalData.merchant_id,
                     "amount": recipeSelected[index].recipeCount
                 };
-
+                console.log(foods);
                 foods.push(food);
             }
             console.log(foods);
