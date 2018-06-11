@@ -1,6 +1,8 @@
 //app.js
 App({
-  onLaunch: function () {
+  onLaunch: function (options) {
+    console.log("[onLaunch] 场景值:", options.scene)
+    this.globalData.scene = options.scene;
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -33,21 +35,24 @@ App({
       }
     })
   },
+
+  
   globalData: {
     userInfo: null,
+    scene: 0,
     recipeSelected: {
         recipeFoodImgUri: [],
         recipeDetail: [],
         recipeMoney: [],
         recipeCount: [],
+        recipeFoodID: [],
+        recipeFoodDescription: [],
         moneyToPay:0,
     },
     isPaying: false,
     payRequestCoupon: false,
     expenseTracker:[],
-    balance: 100,
-    deskID:0,
-    restaurantName:null, 
+    balance: 100, 
     merchant_id: 3,
     seat_id: 11,
     number: "1C",

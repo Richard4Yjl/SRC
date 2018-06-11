@@ -1,8 +1,8 @@
 {
     "pages": [
+        "pages/user/user",
         "pages/home/home",
         "pages/balances/balances",
-        "pages/user/user",
         "pages/toPay/toPay",
         "pages/shopActivities/shopActivities",
         "pages/reportFeedback/reportFeedback",

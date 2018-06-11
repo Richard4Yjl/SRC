@@ -44,6 +44,9 @@ Page({
                 }
             })
         }
+        wx.switchTab({
+            url: '../home/home',
+        })
     },
     onShow: function () {
         var expenseTracker = app.globalData.expenseTracker;

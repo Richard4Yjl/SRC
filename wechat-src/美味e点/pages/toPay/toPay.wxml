@@ -1,6 +1,6 @@
 <view class="desk-money">
     <view class="desk-id">
-        <text>桌号: {{deskID}}</text>
+        <text>桌号: {{seat_id}}</text>
     </view>
     <view class="money-to-pay">
         <text>结算: {{recipeSelected.moneyToPay}}</text>

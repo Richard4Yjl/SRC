@@ -6,19 +6,21 @@ Page({
      * 页面的初始数据
      */
     data: {
-        deskID: 0,
+        seat_id: 0,
 
         recipeSelected: {
             recipeFoodImgUri: [],
             recipeDetail: [],
             recipeMoney: [],
             recipeCount: [],
+            recipeFoodID: [],
+            recipeFoodDescription: [],
             moneyToPay: 0,
         },
     },
     onLoad: function(e) {
         this.setData({
-            deskID: app.globalData.deskID
+            seat_id: app.globalData.seat_id
         })
     },
     onShow: function () {
@@ -45,6 +47,8 @@ Page({
             recipeSelected.recipeDetail.splice(index, 1);
             recipeSelected.recipeMoney.splice(index, 1);
             recipeSelected.recipeCount.splice(index, 1);
+            recipeSelected.recipeFoodID.splice(index, 1);
+            recipeSelected.recipeFoodDescription.splice(index, 1);
         }
         this.setData({
             recipeSelected: recipeSelected,
