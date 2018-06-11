@@ -55,10 +55,10 @@ Page({
                     "merchant_id": app.globalData.merchant_id,
                     "amount": recipeSelected[index].recipeCount
                 };
-                console.log(foods);
+                
                 foods.push(food);
             }
-            console.log(foods);
+           
             wx.request({
                 url: 'https://www.sysu-easyorder.top/orders',
                 data: {
@@ -76,24 +76,28 @@ Page({
                     'content-type': 'application/json' // 默认值
                 },
                 success: function (res) {
-                    console.log(res);
+                    app.globalData.balance -= this.data.moneyToPay;
+                    app.globalData.expenseTracker.push(app.globalData.recipeSelected);
+                    console.log(app.globalData.recipeSelected);
+                    app.globalData.recipeSelected = {
+                        recipeFoodImgUri: [],
+                        recipeDetail: [],
+                        recipeMoney: [],
+                        recipeCount: [],
+                        recipeFoodID: [],
+                        recipeFoodDescription: [],
+                        moneyToPay: 0,
+                        seat_id: 0,
+                    };
+
+                    app.globalData.isPaying = false;
+                },
+                fail: function(res) {
+                    
                 }
             })
 
-            app.globalData.balance -= this.data.moneyToPay;
-
-            app.globalData.expenseTracker.push(app.globalData.recipeSelected);
-            app.globalData.recipeSelected = {
-                recipeFoodImgUri: [],
-                recipeDetail: [],
-                recipeMoney: [],
-                recipeCount: [],
-                recipeFoodID: [],
-                recipeFoodDescription: [],
-                moneyToPay: 0,
-            };
-
-            app.globalData.isPaying = false;
+            
         }
         setTimeout(function () {
             wx.switchTab({

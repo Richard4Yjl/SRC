@@ -16,6 +16,7 @@ Page({
             recipeFoodID: [],
             recipeFoodDescription: [],
             moneyToPay: 0,
+            seat_id: 0,
         },
     },
     onLoad: function(e) {
@@ -55,7 +56,7 @@ Page({
         });
     },
     confirmButtonTap: function (e) {
-        if (app.globalData.isPaying) {
+        if (app.globalData.isPaying && this.data.recipeSelected.moneyToPay > 0) {
             wx.navigateTo({
                 url: './../coupon/coupon?&moneyToPay=' + this.data.recipeSelected.moneyToPay,
             });
