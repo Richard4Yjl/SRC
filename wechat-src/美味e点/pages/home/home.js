@@ -42,64 +42,89 @@ Page({
         app.globalData.seat_id = JSON.parse(result)["seat_id"];
         app.globalData.number = JSON.parse(result)["number"];
     },
-
-    onLoad: function (e) {
-        var that = this;
-        //扫描二维码
-        if (app.globalData.scene == 1011) {
-            this.setData({
-                throughQRCode: true
-            })
+    getScanResult: function() {
+        let that = this;
+        return new Promise(function (resolve, reject) {
             wx.scanCode({
                 onlyFromCamera: true,
                 success: (res) => {
                     var result = res.result;
+                    wx.setStorageSync('result', result);  //储存返回的token
                     that.initialData(result);
+                    resolve(result);
                 },
                 fail: (res) => {
-
+                    reject('error');
                 },
                 complete: (res) => {
 
                 }
             });
-            wx.request({
-                url: 'https://www.sysu-easyorder.top/foods?merchant_id=' + app.globalData.merchant_id,
-                data: {
-                    x: '',
-                    y: ''
-                },
-                header: {
-                    'content-type': 'application/json' // 默认值
-                },
-                success: function (res) {
-                    var data = res.data.data;
-                    var recipeDetail = [];
-                    var recipeMoney = [];
-                    var recipeFoodImgUri = [];
-                    var recipeCount = [];
-                    var recipeFoodID = [];
-                    var recipeFoodDescription = [];
-                    for (var index in data) {
-                        recipeDetail.push(data[index]['name']);
-                        recipeMoney.push(data[index]['price']);
-                        recipeFoodImgUri.push('../../image/food.png');
-                        recipeCount.push(0);
-                        recipeFoodID.push(data[index]['food_id']);
-                        recipeFoodDescription.push(data[index]['description']);
-                    }
-
-                    that.setData({
-                        recipeDetail: recipeDetail,
-                        recipeMoney: recipeMoney,
-                        recipeFoodImgUri: recipeFoodImgUri,
-                        recipeCount: recipeCount,
-                        recipeFoodID: recipeFoodID,
-                        recipeFoodDescription: recipeFoodDescription
-                    });
-
+            
+        })
+    },
+    getMerchant: function() {
+        var that = this;
+        wx.request({
+            url: 'https://www.sysu-easyorder.top/foods?merchant_id=' + app.globalData.merchant_id,
+            data: {
+                x: '',
+                y: ''
+            },
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function (res) {
+                var data = res.data.data;
+                var recipeDetail = [];
+                var recipeMoney = [];
+                var recipeFoodImgUri = [];
+                var recipeCount = [];
+                var recipeFoodID = [];
+                var recipeFoodDescription = [];
+                for (var index in data) {
+                    recipeDetail.push(data[index]['name']);
+                    recipeMoney.push(data[index]['price']);
+                    recipeFoodImgUri.push('../../image/food.png');
+                    recipeCount.push(0);
+                    recipeFoodID.push(data[index]['food_id']);
+                    recipeFoodDescription.push(data[index]['description']);
                 }
-            })
+
+                that.setData({
+                    recipeDetail: recipeDetail,
+                    recipeMoney: recipeMoney,
+                    recipeFoodImgUri: recipeFoodImgUri,
+                    recipeCount: recipeCount,
+                    recipeFoodID: recipeFoodID,
+                    recipeFoodDescription: recipeFoodDescription
+                });
+
+            }
+        })
+    },
+    onLoad: function (e) {
+        var that = this;
+        //扫描二维码
+        if (app.globalData.scene == 1011) {
+            wx.clearStorageSync();
+            let result = wx.getStorageSync("result");
+            
+            if (result == '') {
+                that.getScanResult().then(function(res){
+                    that.setData({
+                        throughQRCode: true
+                    })
+                    that.getMerchant();
+                })
+            }
+            else {
+                wx.clearStorageSync();
+                that.initialData(result);
+                that.setData({
+                    throughQRCode: true
+                })
+            }
         }
         else {
             this.setData({
@@ -165,82 +190,28 @@ Page({
             })
         }
     },
-    //已作废，突然说不要分类和搜索了
-    /*
-    recipeKindTap: function (e) {
 
-        this.setData({
-            kindSelected: -1
-        });
-        //数据库返回别的菜谱
-        var recipeFoodImgUri = [
-            '../../image/food.png',
-            '../../image/food.png',
-            '../../image/food.png',
-        ];
-        var recipeDetail = [
-            "湛江烤番薯4", "湛江烤番薯5", "湛江烤番薯6",
-        ];
-        var recipeCount = [
-            0, 0, 0,
-        ];
-        this.setData({
-            kindSelected: e.currentTarget.dataset.id,
-            recipeFoodImgUri: recipeFoodImgUri,
-            recipeDetail: recipeDetail,
-            recipeCount: recipeCount,
-        });
-
-    },
-    
-    searchInput: function (e) {
-        this.setData({
-            searchValue: e.detail.value
-        });
-    },
-    searchIconTap: function (e) {
-        var recipeFoodImgUri = [];
-        var recipeDetail = [];
-        var recipeMoney = [];
-        var recipeCount = [];
-        var searchedIndex = [];
-        if (this.data.searchValue == "") {
-            this.setData({
-                isSearching: false
-            });
-            searchedIndex = this.data.searchedIndex;
-            recipeCount = this.data.recipeCount;
-            for (var i in searchedIndex) {
-                recipeCount[searchedIndex[i]] = this.data.searchingRecipeCount[i];
-            }
-            this.setData({
-                recipeCount: recipeCount
-            });
+    loginTap: function(e) {
+        //需要一个判断二维码是否合法
+        wx.clearStorageSync();
+        let result = wx.getStorageSync("result");
+        var that = this;
+        if (result == '') {
+            that.getScanResult().then(function (res) {
+                that.setData({
+                    throughQRCode: true
+                })
+                that.getMerchant();
+            })
         }
         else {
-            this.setData({
-                isSearching: true
-            });
-            for (var index in this.data.recipeDetail) {
-                if (this.data.recipeDetail[index].indexOf(this.data.searchValue) >= 0) {
-                    recipeFoodImgUri.push(this.data.recipeFoodImgUri[index]);
-                    recipeDetail.push(this.data.recipeDetail[index]);
-                    recipeMoney.push(this.data.recipeMoney[index]);
-                    recipeCount.push(this.data.recipeCount[index]);
-                    searchedIndex.push(index);
-                }
-            }
-            this.setData({
-                searchingRecipeFoodImgUri: recipeFoodImgUri,
-                searchingRecipeDetail: recipeDetail,
-                searchingRecipeMoney: recipeMoney,
-                searchingRecipeCount: recipeCount,
-                searchedIndex: searchedIndex,
-            });
-
+            wx.clearStorageSync();
+            that.initialData(result);
+            that.setData({
+                throughQRCode: true
+            })
         }
     },
-    */
     //缺少在搜索页面之后点击的实现
     addIconTap: function (e) {
         var index = e.currentTarget.dataset.id; //在列表中的下标

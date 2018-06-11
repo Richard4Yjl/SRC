@@ -44,6 +44,15 @@ swiper {
     flex-direction: row;
     overflow: hidden;
 }
+.recipe-container-notScanQRCode {
+    border: 1px solid #aaa;
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    height: 0;
+    flex-direction: row;
+    overflow: hidden;
+}
 /*突然说不要种类*/
 .recipe-kind {
     display: flex;
@@ -123,4 +132,36 @@ swiper {
     flex-grow: 1;
     justify-content: center;
     flex-direction: column;
+}
+.login-btn-view {
+    height: 60%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.login-btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    width: 120px;
+}
+.login-btn-view-scanCode {
+    height: 0;
+    width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.login-btn-scanCode{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    width: 0;
 }
