@@ -1,6 +1,8 @@
 //app.js
 App({
-  onLaunch: function () {
+  onLaunch: function (options) {
+    console.log("[onLaunch] 场景值:", options.scene)
+    this.globalData.scene = options.scene;
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -33,12 +35,10 @@ App({
       }
     })
   },
-  onHide: function() {
-        this.globalData.throughQRCode = false;
-  },
+  
   globalData: {
     userInfo: null,
-    throughQRCode: true,
+    scene: 0,
     recipeSelected: {
         recipeFoodImgUri: [],
         recipeDetail: [],

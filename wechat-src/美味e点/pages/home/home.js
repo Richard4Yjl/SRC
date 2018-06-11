@@ -41,70 +41,79 @@ Page({
         app.globalData.merchant_id = JSON.parse(result)["merchant_id"];
         app.globalData.seat_id = JSON.parse(result)["seat_id"];
         app.globalData.number = JSON.parse(result)["number"];
-        app.globalData.throughQRCode = false;
     },
 
     onLoad: function (e) {
         var that = this;
         //扫描二维码
+        if (app.globalData.scene == 1011) {
+            this.setData({
+                throughQRCode: true
+            })
+            wx.scanCode({
+                onlyFromCamera: true,
+                success: (res) => {
+                    var result = res.result;
+                    that.initialData(result);
+                },
+                fail: (res) => {
 
-        wx.scanCode({
-            onlyFromCamera: true,
-            success: (res) => {
-                var result = res.result;
-                that.initialData(result);
-            },
-            fail: (res) => {
+                },
+                complete: (res) => {
 
-            },
-            complete: (res) => {
-
-            }
-        });
-
-
-        wx.request({
-            url: 'https://www.sysu-easyorder.top/foods?merchant_id=' + app.globalData.merchant_id,
-            data: {
-                x: '',
-                y: ''
-            },
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            success: function (res) {
-                var data = res.data.data;
-                var recipeDetail = [];
-                var recipeMoney = [];
-                var recipeFoodImgUri = [];
-                var recipeCount = [];
-                var recipeFoodID = [];
-                var recipeFoodDescription = [];
-                for (var index in data) {
-                    recipeDetail.push(data[index]['name']);
-                    recipeMoney.push(data[index]['price']);
-                    recipeFoodImgUri.push('../../image/food.png');
-                    recipeCount.push(0);
-                    recipeFoodID.push(data[index]['food_id']);
-                    recipeFoodDescription.push(data[index]['description']);
                 }
+            });
+            wx.request({
+                url: 'https://www.sysu-easyorder.top/foods?merchant_id=' + app.globalData.merchant_id,
+                data: {
+                    x: '',
+                    y: ''
+                },
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                success: function (res) {
+                    var data = res.data.data;
+                    var recipeDetail = [];
+                    var recipeMoney = [];
+                    var recipeFoodImgUri = [];
+                    var recipeCount = [];
+                    var recipeFoodID = [];
+                    var recipeFoodDescription = [];
+                    for (var index in data) {
+                        recipeDetail.push(data[index]['name']);
+                        recipeMoney.push(data[index]['price']);
+                        recipeFoodImgUri.push('../../image/food.png');
+                        recipeCount.push(0);
+                        recipeFoodID.push(data[index]['food_id']);
+                        recipeFoodDescription.push(data[index]['description']);
+                    }
 
-                that.setData({
-                    recipeDetail: recipeDetail,
-                    recipeMoney: recipeMoney,
-                    recipeFoodImgUri: recipeFoodImgUri,
-                    recipeCount: recipeCount,
-                    recipeFoodID: recipeFoodID,
-                    recipeFoodDescription: recipeFoodDescription
-                });
+                    that.setData({
+                        recipeDetail: recipeDetail,
+                        recipeMoney: recipeMoney,
+                        recipeFoodImgUri: recipeFoodImgUri,
+                        recipeCount: recipeCount,
+                        recipeFoodID: recipeFoodID,
+                        recipeFoodDescription: recipeFoodDescription
+                    });
 
-            }
-        })
+                }
+            })
+        }
+        else {
+            this.setData({
+                throughQRCode: false
+            })
+        }
+
+
+        
 
     },
     onShow: function () {
-        
-        if (!app.globalData.throughQRCode) {
+
+        if (!this.data.throughQRCode) {
             var recipeDetail = [];
             var recipeMoney = [];
             var recipeFoodImgUri = [];
