@@ -10,33 +10,7 @@ swiper {
     width: 100%;
     height: 100%;
 }
-.search-container {
-    /*display: flex;*/
-    display: none;
-    flex-direction: row;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    height: 7%;
-    align-items: center;
-}
-.search-icon {
-    margin-left: 3px;
-    display: none;
-}
-.search-input {
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    margin-left: 10px;
-    margin-right: 5px;
-    width: 83%;
-    height: 32px;
-    background-color: #fafafa;
-    font-size: 32rpx;
-    /*display: flex;*/
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-}
+
 
 .recipe-container {
     border: 1px solid #aaa;

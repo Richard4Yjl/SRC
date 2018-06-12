@@ -48,6 +48,7 @@ App({
         recipeFoodID: [],
         recipeFoodDescription: [],
         moneyToPay:0,
+        seat_id: 0,
     },
     isPaying: false,
     payRequestCoupon: false,

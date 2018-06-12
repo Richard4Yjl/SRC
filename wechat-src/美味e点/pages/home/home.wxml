@@ -6,15 +6,12 @@
     </block>
 </swiper>
 
-<view class="search-container">
-    <input class="search-input" value="{{searchValue}}" bindinput="searchInput" placeholder="输入菜名搜索" />
-    <icon class="search-cion" size='25' type='search' bindtap='searchIconTap'></icon>
-</view>
+
 
 <view class="{{throughQRCode?'recipe-container':'recipe-container-notScanQRCode'}}">
 
     <scroll-view class="{{throughQRCode?'recipe-detail-container':'recipe-detail-container-notScanQRCode'}}" scroll-y>
-        <view class="recipe-item" wx:for="{{isSearching?searchingRecipeFoodImgUri:recipeFoodImgUri}}">
+        <view class="recipe-item" wx:for="{{recipeFoodImgUri}}">
             <view class="add-icon" bindtap='addIconTap' data-id="{{index}}">
                 <image src="../../image/add.png"></image>
             </view>
@@ -23,14 +20,14 @@
             </view>
             <view class="recipe-detail">
                 <view>
-                    <text>{{isSearching?searchingRecipeDetail[index]:recipeDetail[index]}}</text>
+                    <text>{{recipeDetail[index]}}</text>
                 </view>
                 <view>
                     <text>￥{{recipeMoney[index]}}</text>
                 </view>
             </view>
             <view class="food-count">
-                <text>x{{isSearching?searchingRecipeCount[index]:recipeCount[index]}}</text>
+                <text>x{{recipeCount[index]}}</text>
             </view>
             <view class="subtract-icon" bindtap='subtractIconTap' data-id="{{index}}">
                 <image src="../../image/subtract.png"></image>
@@ -39,5 +36,5 @@
     </scroll-view>
 </view>
 <view class="{{throughQRCode?'login-btn-view-scanCode':'login-btn-view'}}" >
-    <button class="{{throughQRCode?'login-btn-scanCode':'login-btn'}}" bindtap='loginTap'>扫码点餐</button>
+    <button class="{{throughQRCode?'login-btn-scanCode':'login-btn'}}" bindtap='scanTap'>扫码点餐</button>
 </view>
