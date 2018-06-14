@@ -21,4 +21,6 @@
 }
 .recharge-input {
     border: 1px solid #aaa;
+    height: 2.0rem;
 }
+

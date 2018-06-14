@@ -4,20 +4,121 @@ const app = getApp()
 
 Page({
     data: {
-        id: null,
         userInfo: {},
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
         orderList: [],
         balance: 0,
     },
+    getCustomer: function () {
+        return new Promise(function (resolve, reject) {
+            wx.request({
+                url: 'https://www.sysu-easyorder.top/customers/' + app.globalData.customer_id,
+                data: {
+
+                },
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                success: function (res) {
+                  
+                    if (res.statusCode == 200){
+                        app.globalData.wechat_id = res.data.data.wechat_id;
+                        app.globalData.balance = res.data.data.balance;
+                    }
+                    else {
+                        console.log("no user exist")
+                    }
+                    resolve(res.statusCode);
+                    
+                },
+                fail: function (res) {
+                    reject('error');
+                }
+            })
+        });
+
+    },
+    createCustomer: function () {
+
+        var that = this;
+
+        //create user
+        return new Promise(function (resolve, reject) {
+            wx.request({
+                url: 'https://www.sysu-easyorder.top/customers',
+                data: {
+                    "customer_id": null,
+                    "wechat_id": "asdf",
+                    "balance": 0
+                },
+                method: 'POST',
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                success: function (res) {
+                    console.log('create user');
+                   
+                    app.globalData.customer_id = res.data.data.customer_id;
+                    app.globalData.balance = res.data.data.balance;
+                    app.globalData.wechat_id = res.data.data.wechat_id;
+
+                    that.setData({
+                        balance: app.globalData.balance
+                    })
+                    wx.setStorageSync("customer_id", app.globalData.customer_id);
+                }
+            })
+
+        });
+
+    },
+    getOrderList: function () {
+        var that = this;
+        return new Promise(function (resolve, reject) {
+            wx.request({
+                url: 'https://www.sysu-easyorder.top/orders?customer_id=' + app.globalData.customer_id + '&status=1',
+                success: function (res) {
+                    var recipeSelecteds = res.data.data;
+                   
+                    for (var index in recipeSelecteds) {
+                        var recipeSelected = {
+                            recipeFoodImgUri: [],
+                            recipeDetail: [],
+                            recipeMoney: [],
+                            recipeCount: [],
+                            recipeFoodID: [],
+                            recipeFoodDescription: [],
+                            moneyToPay: 0,
+                            seat_id: 0,
+                        };
+                        for (var i in recipeSelecteds[index].foods) {
+                            recipeSelected.recipeFoodImgUri.push('../../image/food.png');
+                            recipeSelected.recipeDetail.push(recipeSelecteds[index].foods[i].name);
+                            recipeSelected.recipeMoney.push(recipeSelecteds[index].foods[i].price);
+                            recipeSelected.recipeCount.push(recipeSelecteds[index].foods[i].amount);
+                            recipeSelected.recipeFoodID.push(recipeSelecteds[index].foods[i].food_id);
+                            recipeSelected.recipeFoodDescription.push(recipeSelecteds[index].foods[i].description);
+                            recipeSelected.moneyToPay += recipeSelecteds[index].foods[i].price * recipeSelecteds[index].foods[i].amount;
+                            recipeSelected['orderTime'] = recipeSelecteds[index].order_time;
+                        }
+                        recipeSelected.seat_id = recipeSelecteds[index].seat_id;
+                        app.globalData.expenseTracker.push(recipeSelected);
+                    }
+                    resolve(res);
+                },
+                fail: function (res) {
+                    reject('error');
+                }
+
+            })
+        });
+    },
     onLoad: function () {
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
                 hasUserInfo: true,
-                id: 10086,
-                balance: app.globalData.balance,
             })
         } else if (this.data.canIUse) {
             // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -26,8 +127,6 @@ Page({
                 this.setData({
                     userInfo: res.userInfo,
                     hasUserInfo: true,
-                    id: 10086,
-                    balance: app.globalData.balance,
                 })
             }
         } else {
@@ -38,12 +137,27 @@ Page({
                     this.setData({
                         userInfo: res.userInfo,
                         hasUserInfo: true,
-                        id: 10086,
-                        balance: app.globalData.balance,
                     })
                 }
             })
         }
+
+        var that = this;
+        app.globalData.customer_id = wx.getStorageSync("customer_id");
+        console.log("app.global.customer_id:")
+        console.log(app.globalData.customer_id);
+        that.getCustomer().then(function (res) {
+          
+            if (res != 200) {
+                that.createCustomer();
+            }
+            else {
+                that.getOrderList();
+            }
+
+        })
+
+
         wx.switchTab({
             url: '../home/home',
         })
@@ -58,36 +172,36 @@ Page({
             for (var i in recipeSelected.recipeDetail) {
                 detail += recipeSelected.recipeDetail[i] + "  +  ";
             }
-            detail = detail.slice(0, detail.length-3);
+            detail = detail.slice(0, detail.length - 3);
+            var recipeTime = recipeSelected.orderTime;
             var orderListItem = {
                 recipeDetail: detail,
-                recipeTime: "2018/5/1  12:00",
+                recipeTime: recipeTime.substr(0, 10) + " " + recipeTime.substr(11, 5),
             }
             orderList.push(orderListItem);
         }
         this.setData({
-          orderList: orderList,
-          balance: app.globalData.balance,
+            orderList: orderList,
+            balance: app.globalData.balance,
         })
     },
     getUserInfo: function (e) {
-        console.log(e)
+
         app.globalData.userInfo = e.detail.userInfo
         this.setData({
             userInfo: e.detail.userInfo,
             hasUserInfo: true
         })
     },
-    orderListItemTap: function(e) {
+    orderListItemTap: function (e) {
         var index = e.currentTarget.dataset.id;
-        var recipeSelected = app.globalData.expenseTracker[index];
         wx.navigateTo({
             url: './../paid/paid?selectedIndex=' + index,
         })
     },
-    balances: function(e) {
+    balances: function (e) {
         wx.navigateTo({
-          url: '../balances/balances',
+            url: '../balances/balances',
         })
     }
 })

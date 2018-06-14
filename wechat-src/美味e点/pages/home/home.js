@@ -33,75 +33,92 @@ Page({
         throughQRCode: false,
         QRCodeValid: false,
     },
+    //初始化数据中的全局变量
     initialData: function (result) {
-        app.globalData.merchant_id = JSON.parse(result)["merchant_id"];
-        app.globalData.seat_id = JSON.parse(result)["seat_id"];
-        app.globalData.number = JSON.parse(result)["number"];
+        app.globalData.merchant_id = result["merchant_id"];
+        app.globalData.seat_id = result["seat_id"];
+        app.globalData.number = result["number"];
     },
-    testScanResult: function (result) {
+    //测试二维码中的数据可以访问
+    testScanResult: function () {
         var that = this;
         var foods = [];
-        wx.request({
-            url: 'https://www.sysu-easyorder.top/orders',
-            data: {
-                "order_id": null,
-                "status": 0,
-                "seat_id": result['seat_id'],
-                "customer_id": 1,
-                "merchant_id": result['merchant_id'],
-                "order_time": "2018-01-01T12:00:00+08:00",
-                "complete_time": "2018-01-02T12:00:00+08:00",
-                "foods": foods
-            },
-            method: 'POST',
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            success: function (res) {
+        
+        var result = wx.getStorageSync('result');
+        that.initialData(result);
+        return new Promise(function (resolve, reject) {
+            wx.request({
+                url: 'https://www.sysu-easyorder.top/foods?merchant_id=' + result['merchant_id'],
+                data: {
+                    x: '',
+                    y: ''
+                },
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                success: function (res) {
+                        wx.setStorageSync('QRCodeValid', true);
+                        resolve(res);
                 
-                if (res.statusCode == 201) {
-                    that.setData({
-                        QRCodeValid: true
-                    })
-                    
+
+                },
+                fail: function (res) {
+                    wx.showToast({
+                        title: '二维码错误',
+                        duration: 1000,
+                        image: '../../image/warning.png',
+                        mask: true
+                    });
+                    return;
+                    reject("error");
                 }
-                
-            },
-            fail: function (res) {
-                
-            }
-        })
+
+            })
+        });
+
     },
+    //保存二维码的解析result
     getScanResult: function () {
+        
         let that = this;
         return new Promise(function (resolve, reject) {
             wx.scanCode({
                 onlyFromCamera: true,
-                success: function(res) {
+                success: function (res) {
                     try {
                         var result = JSON.parse(res.result);
+
                         if (result.hasOwnProperty("seat_id") && result.hasOwnProperty("number") &&
                             result.hasOwnProperty("qr_code_url") && result.hasOwnProperty("merchant_id")
                             && Object.keys(result).length == 4 && typeof (result["seat_id"]) == "number"
                             && typeof (result["number"]) == "string" && typeof (result["qr_code_url"]) == "string"
                             && typeof (result["merchant_id"]) == "number") {
-                            that.testScanResult(result);
-                            if (that.data.QRCodeValid == true) {
-                                wx.setStorageSync('result', result);  //储存返回的token
-                                that.initialData(result);
+                            
+                            //格式符合就存储result
+                            wx.setStorageSync('result', result);
+                            console.log(result);
+                            resolve(result);
 
-                                resolve(result);
-                                
-                            }
+                        }
+                        else {
+                            wx.showToast({
+                                title: '二维码错误',
+                                duration: 1000,
+                                image: '../../image/warning.png',
+                                mask: true
+                            });
                             return;
                         }
                     } catch (e) {
+                        wx.showToast({
+                            title: '二维码错误',
+                            duration: 1000,
+                            image: '../../image/warning.png',
+                            mask: true
+                        });
+                        return;
                     }
-                    wx.showToast({
-                        title: '二维码错误',
-                        duration: 1000,
-                        mask: true
-                    });
+
 
                 },
                 fail: (res) => {
@@ -110,9 +127,7 @@ Page({
                 complete: (res) => {
                 }
             });
-
-            console.log("debug2");
-        })
+        });
     },
     getMerchant: function () {
         var that = this;
@@ -133,6 +148,7 @@ Page({
                 var recipeCount = [];
                 var recipeFoodID = [];
                 var recipeFoodDescription = [];
+              
                 for (var index in data) {
                     recipeDetail.push(data[index]['name']);
                     recipeMoney.push(data[index]['price']);
@@ -151,35 +167,41 @@ Page({
                     recipeFoodDescription: recipeFoodDescription
                 });
 
+            },
+            fail: function(res) {
+                wx.showToast({
+                    title: '未知错误',
+                    duration: 1000,
+                    image: '../../image/warning.png',
+                    mask: true
+                });
             }
         })
+
     },
     onLoad: function (e) {
         var that = this;
         //扫描二维码
+        //1011 表示第一次扫码进入小程序， true模拟进入方便电脑debug
         if (app.globalData.scene == 1011) {
-            wx.clearStorageSync();
-            console.log("debug");
-            let result = wx.getStorageSync("result");
+            
+            that.getScanResult().then(function (res) {
 
-            if (result == '') {
-                that.getScanResult().then(function (res) {
-                    that.setData({
-                        throughQRCode: true
-                    })
-                    that.getMerchant();
+                that.testScanResult().then(function (res) {
+
+                    var QRCodeValid = wx.getStorageSync('QRCodeValid');
+                    if (QRCodeValid == true) {
+                        that.getMerchant();
+                        that.setData({
+                            QRCodeValid: true,
+                            throughQRCode: true,
+                        })
+                    }
                 })
-            }
-            else {
-                wx.clearStorageSync();
-                that.initialData(result);
-                that.setData({
-                    throughQRCode: true
-                })
-            }
+            })
+
         }
         else {
-            
             this.setData({
                 throughQRCode: false
             })
@@ -188,7 +210,7 @@ Page({
     },
 
     onShow: function () {
-
+        app.globalData.isPaying = true;
         if (!this.data.throughQRCode) {
             var recipeDetail = [];
             var recipeMoney = [];
@@ -244,26 +266,25 @@ Page({
 
     scanTap: function (e) {
         //需要一个判断二维码是否合法
-        wx.clearStorageSync();
-        let result = wx.getStorageSync("result");
         var that = this;
-        console.log("debug1");
-        if (result == '') {
-            that.getScanResult().then(function (res) {
-                console.log("debug2");
-                that.setData({
-                    throughQRCode: true
-                })
-                that.getMerchant();
+        that.getScanResult().then(function (res) {
+            
+            that.testScanResult().then(function (res) {
+
+                var QRCodeValid = wx.getStorageSync('QRCodeValid');
+
+                if (QRCodeValid == true) {
+                    that.getMerchant();
+                    that.setData({
+                        QRCodeValid: true,
+                        throughQRCode: true,
+                    })
+                }
+
             })
-        }
-        else {
-            wx.clearStorageSync();
-            that.initialData(result);
-            that.setData({
-                throughQRCode: true
-            })
-        }
+        })
+
+
     },
     //缺少在搜索页面之后点击的实现
     addIconTap: function (e) {

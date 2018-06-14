@@ -7,15 +7,7 @@
     </view>
 </view>
 
-<view class='coupon-container' wx:for="{{couponList}}">
-    <checkbox-group bindchange="checkboxChange">
-        <label>
-            <checkbox checked="{{item.checked}}">
-                <image class="coupon-image" src="{{item.imgUri}}"></image>
-            </checkbox>
-        </label>
-    </checkbox-group>
-</view>
+
 
 <button class="confirm-button payRequestCoupon?buttonDispaly:buttonNotDisplay" bindtap='confirmButtonTap'>
     <text>确认付款</text>

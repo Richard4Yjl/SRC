@@ -30,9 +30,7 @@ Page({
             recipeSelected: app.globalData.recipeSelected,
 
         })
-        if (app.globalData.recipeSelected.recipeDetail.length != 0) {
-            app.globalData.isPaying = true;
-        }
+        
     },
     onHide: function (e) {
         app.globalData.recipeSelected = this.data.recipeSelected;

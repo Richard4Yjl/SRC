@@ -22,14 +22,6 @@ page {
     flex-direction: row;
     justify-content: space-around;
 }
-.userinfo-nickname {
-    position: relative;
-    left: 60px;
-}
-.userinfo-id {
-    position: relative;
-    right: 40px;
-}
 
 .money-coupon-feedback {
     display: flex;

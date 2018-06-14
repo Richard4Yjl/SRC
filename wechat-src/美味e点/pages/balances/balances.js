@@ -47,6 +47,21 @@ Page({
               duration: 1000,
               mask: true
             });
+            wx.request({
+                url: 'https://www.sysu-easyorder.top/customers/' + app.globalData.customer_id,
+                data:{
+                    "customer_id": app.globalData.customer_id,
+                    "wechat_id": app.globalData.wechat_id,
+                    "balance": app.globalData.balance
+                },
+                method: 'PUT',
+                success: function(res) {
+                    console.log("balance success");
+                },
+                fail: function(res) {
+                    console.log("balance fail ")
+                }
+            })
             setTimeout(function () {
                 wx.navigateBack({
                     url: './../user/user',

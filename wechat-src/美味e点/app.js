@@ -53,9 +53,11 @@ App({
     isPaying: false,
     payRequestCoupon: false,
     expenseTracker:[],
-    balance: 100, 
+    balance: 0, 
     merchant_id: 3,
     seat_id: 11,
     number: "1C",
+    customer_id: null,
+    wechat_id: null,
   }
 })
