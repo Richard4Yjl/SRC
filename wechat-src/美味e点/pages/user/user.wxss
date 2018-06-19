@@ -92,14 +92,15 @@ page {
     overflow: hidden;
     text-overflow:ellipsis;
     align-self:center;
+    border-right: 1px solid #aaa;
 }
 .order-list-time {
     width: 23%;
+    height: 100%;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: end;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
     font-size: 15px;
-    border-left: 1px solid #aaa;
 }

@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+const util = require('../../util.js');
 Page({
     data: {
         userInfo: {},
@@ -21,8 +21,8 @@ Page({
                     'content-type': 'application/json' // 默认值
                 },
                 success: function (res) {
-                  
-                    if (res.statusCode == 200){
+
+                    if (res.statusCode == 200) {
                         app.globalData.wechat_id = res.data.data.wechat_id;
                         app.globalData.balance = res.data.data.balance;
                     }
@@ -30,7 +30,7 @@ Page({
                         console.log("no user exist")
                     }
                     resolve(res.statusCode);
-                    
+
                 },
                 fail: function (res) {
                     reject('error');
@@ -58,7 +58,7 @@ Page({
                 },
                 success: function (res) {
                     console.log('create user');
-                   
+
                     app.globalData.customer_id = res.data.data.customer_id;
                     app.globalData.balance = res.data.data.balance;
                     app.globalData.wechat_id = res.data.data.wechat_id;
@@ -73,14 +73,17 @@ Page({
         });
 
     },
-    getOrderList: function () {
+    getOrderList: function (status) {
         var that = this;
         return new Promise(function (resolve, reject) {
             wx.request({
-                url: 'https://www.sysu-easyorder.top/orders?customer_id=' + app.globalData.customer_id + '&status=1',
+                url: 'https://www.sysu-easyorder.top/orders?customer_id=' + app.globalData.customer_id + '&status=' + status,
                 success: function (res) {
+                    if (status == 0) {
+                        console.log(res);
+                    }
                     var recipeSelecteds = res.data.data;
-                   
+
                     for (var index in recipeSelecteds) {
                         var recipeSelected = {
                             recipeFoodImgUri: [],
@@ -100,7 +103,17 @@ Page({
                             recipeSelected.recipeFoodID.push(recipeSelecteds[index].foods[i].food_id);
                             recipeSelected.recipeFoodDescription.push(recipeSelecteds[index].foods[i].description);
                             recipeSelected.moneyToPay += recipeSelecteds[index].foods[i].price * recipeSelecteds[index].foods[i].amount;
-                            recipeSelected['orderTime'] = recipeSelecteds[index].order_time;
+                            var year = parseInt(recipeSelecteds[index].order_time.substr(0, 4));
+                            var month = parseInt(recipeSelecteds[index].order_time.substr(5, 2));
+                            var day = parseInt(recipeSelecteds[index].order_time.substr(8, 2));
+                            var hour = parseInt(recipeSelecteds[index].order_time.substr(11, 2));
+                            var dateArrage = util.arrangeTime(year, month, day, hour);
+                            year = dateArrage[0];
+                            month = dateArrage[1];
+                            day = dateArrage[2];
+                            hour = dateArrage[3];
+                            var time = "" + year + "-" + ((month < 10)?"0":"") + month + "-" + ((day < 10)?"0":"") + day + "T" + ((hour < 10)?"0":"") + hour + recipeSelecteds[index].order_time.substr(13);
+                            recipeSelected['orderTime'] = time;
                         }
                         recipeSelected.seat_id = recipeSelecteds[index].seat_id;
                         app.globalData.expenseTracker.push(recipeSelected);
@@ -147,12 +160,12 @@ Page({
         console.log("app.global.customer_id:")
         console.log(app.globalData.customer_id);
         that.getCustomer().then(function (res) {
-          
+
             if (res != 200) {
                 that.createCustomer();
             }
             else {
-                that.getOrderList();
+                that.getOrderList(1);
             }
 
         })
@@ -163,6 +176,7 @@ Page({
         })
     },
     onShow: function () {
+
         var expenseTracker = app.globalData.expenseTracker;
         var orderList = [];
 

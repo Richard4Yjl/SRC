@@ -15,10 +15,10 @@
             <view class="add-icon" bindtap='addIconTap' data-id="{{index}}">
                 <image src="../../image/add.png"></image>
             </view>
-            <view class="food-icon">
+            <view class="food-icon" bindtap='recipeItemTap' data-id="{{index}}">
                 <image src="{{item}}"></image>
             </view>
-            <view class="recipe-detail">
+            <view class="recipe-detail" bindtap='recipeItemTap'  data-id="{{index}}">
                 <view>
                     <text>{{recipeDetail[index]}}</text>
                 </view>

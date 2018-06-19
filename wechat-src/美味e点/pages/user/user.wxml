@@ -31,8 +31,10 @@
                 <view bindtap='orderListItemTap'  class="order-list-recipe" data-id='{{index}}'>
                     <text>{{item.recipeDetail}}</text>
                 </view>
-
-                <text class="order-list-time">{{item.recipeTime}}</text>
+                <view class="order-list-time">
+                    <text>{{item.recipeTime}}</text>
+                </view>
+                
             </view>
         </scroll-view>
     </view>

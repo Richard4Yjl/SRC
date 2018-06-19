@@ -9,27 +9,29 @@
 
 <view class="recipe-detail-container">
     <view class="recipe-title">
-        <text>您的菜谱</text>
+        <text>购物车</text>
     </view>
-    <view class="recipe-item" wx:for="{{recipeSelected.recipeDetail}}">
-        <view class="food-icon">
-            <image src="{{recipeSelected.recipeFoodImgUri[index]}}"></image>
-        </view>
-        <view class="recipe-detail">
-            <view>
-                <text>{{item}}</text>
+    <scroll-view class="recipe-list-container" scroll-y>
+        <view class="recipe-item" wx:for="{{recipeSelected.recipeDetail}}">
+            <view class="food-icon">
+                <image src="{{recipeSelected.recipeFoodImgUri[index]}}"></image>
             </view>
-            <view>
-                <text>￥{{recipeSelected.recipeMoney[index]}}</text>
+            <view class="recipe-detail">
+                <view>
+                    <text>{{item}}</text>
+                </view>
+                <view>
+                    <text>￥{{recipeSelected.recipeMoney[index]}}</text>
+                </view>
+            </view>
+            <view class="food-count">
+                <text>x{{recipeSelected.recipeCount[index]}}</text>
+            </view>
+            <view class="minus-icon" bindtap='minusIconTap' data-id="{{index}}">
+                <image src="../../image/minus.png"></image>
             </view>
         </view>
-        <view class="food-count">
-            <text>x{{recipeSelected.recipeCount[index]}}</text>
-        </view>
-        <view class="minus-icon" bindtap='minusIconTap' data-id="{{index}}">
-            <image src="../../image/minus.png"></image>
-        </view>
-    </view>
+    </scroll-view>
 </view>
 
 <button class="confirm-button" bindtap='confirmButtonTap'>

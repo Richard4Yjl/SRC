@@ -33,6 +33,7 @@ Page({
         // 发送订单
         var recipeSelected = app.globalData.recipeSelected;
         var orderTime = util.formatTime(new Date());
+        
         this.setData({
             orderTime: orderTime,
         })

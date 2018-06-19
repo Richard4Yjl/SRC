@@ -3,9 +3,9 @@ const Promise = require('../../promise.js');
 Page({
     data: {
         imgUrls: [
-            'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-            'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-            'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529160360877&di=a1cf49f78b845d03c28b67cbae893d3a&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fbainuo%2Fcrop%3D0%2C21%2C690%2C418%3Bw%3D470%3Bq%3D79%2Fsign%3D9d6eb313ae18972bb7755a8adbfd57bb%2Fb21bb051f81986187b0260834fed2e738bd4e674.jpg',
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529160360874&di=172f6f95155374079ca4ad17234221a2&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171016%2F07e2682ec6a14df0ac9c414ff6af1a7a.jpeg',
+            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529160360874&di=f642637b1cb311f7b207dcecbf88d3aa&imgtype=0&src=http%3A%2F%2Fs1.nuomi.bdimg.com%2Fupload%2Fdeal%2F2011%2F04%2FV_L%2F2611.jpg'
         ],
         indicatorDots: true,
         autoplay: true,
@@ -363,6 +363,20 @@ Page({
             recipeSelected: recipeSelected
         })
 
+    },
+    recipeItemTap: function(e) {
+        var index = e.currentTarget.dataset.id;
+        var recipeItem = [];
+        recipeItem.push(this.data.recipeFoodImgUri[index]);
+        recipeItem.push(this.data.recipeDetail[index]);
+        recipeItem.push(this.data.recipeMoney[index]);
+        recipeItem.push(this.data.recipeFoodDescription[index]);
+        wx.navigateTo({
+            url: '../foodDescription/foodDescription?recipeItem=' + recipeItem,
+        })
+       
+        
+        
     },
     onHide: function (e) {
         app.globalData.recipeSelected = this.data.recipeSelected;

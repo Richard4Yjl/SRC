@@ -8,8 +8,8 @@
         "pages/reportFeedback/reportFeedback",
         "pages/coupon/coupon",
         "pages/report/report",
-        "pages/paid/paid"
-        
+        "pages/paid/paid",
+        "pages/foodDescription/foodDescription"
     ],
     "window": {
         "backgroundTextStyle": "light",
