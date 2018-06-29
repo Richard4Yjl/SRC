@@ -185,9 +185,9 @@ Page({
 
         var expenseTracker = app.globalData.expenseTracker;
         var orderList = [];
-
+        var len = expenseTracker.length;
         for (var index in expenseTracker) {
-            var recipeSelected = expenseTracker[index];
+            var recipeSelected = expenseTracker[len - 1 - index];
             var detail = "";
             for (var i in recipeSelected.recipeDetail) {
                 detail += recipeSelected.recipeDetail[i] + "  +  ";
