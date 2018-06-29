@@ -28,13 +28,16 @@
         </view>
         <scroll-view class="order-list" scroll-y>
             <view wx:for="{{orderList}}" class="order-list-item">
-                <view bindtap='orderListItemTap'  class="order-list-recipe" data-id='{{index}}'>
-                    <text>{{item.recipeDetail}}</text>
+                <view class="order-list-recipe-container">
+                    <view bindtap='orderListItemTap' class="order-list-recipe" data-id='{{index}}'>
+                        <text>{{item.recipeDetail}}</text>
+                    </view>
                 </view>
+
                 <view class="order-list-time">
                     <text>{{item.recipeTime}}</text>
                 </view>
-                
+
             </view>
         </scroll-view>
     </view>

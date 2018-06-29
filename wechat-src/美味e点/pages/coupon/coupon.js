@@ -45,7 +45,8 @@ Page({
                 "description": recipeSelected.recipeFoodDescription[index],
                 "price": recipeSelected.recipeMoney[index],
                 "merchant_id": app.globalData.merchant_id,
-                "amount": recipeSelected.recipeCount[index]
+                "amount": recipeSelected.recipeCount[index],
+                'icon_url':recipeSelected.recipeFoodImgUri[index].substr(30)
             };
 
             foods.push(food);
@@ -74,6 +75,8 @@ Page({
              
                     app.globalData.balance -= that.data.moneyToPay;
                     var tracker = app.globalData.recipeSelected;
+                    console.log('tracker');
+                    console.log(tracker);
                     tracker['orderTime'] = that.data.orderTime;
                     app.globalData.expenseTracker.push(tracker);
                     app.globalData.recipeSelected = {

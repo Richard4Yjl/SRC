@@ -43,7 +43,7 @@ Page({
     testScanResult: function () {
         var that = this;
         var foods = [];
-        
+
         var result = wx.getStorageSync('result');
         that.initialData(result);
         return new Promise(function (resolve, reject) {
@@ -57,9 +57,9 @@ Page({
                     'content-type': 'application/json' // 默认值
                 },
                 success: function (res) {
-                        wx.setStorageSync('QRCodeValid', true);
-                        resolve(res);
-                
+                    wx.setStorageSync('QRCodeValid', true);
+                    resolve(res);
+
 
                 },
                 fail: function (res) {
@@ -79,7 +79,7 @@ Page({
     },
     //保存二维码的解析result
     getScanResult: function () {
-        
+
         let that = this;
         return new Promise(function (resolve, reject) {
             wx.scanCode({
@@ -93,7 +93,7 @@ Page({
                             && Object.keys(result).length == 4 && typeof (result["seat_id"]) == "number"
                             && typeof (result["number"]) == "string" && typeof (result["qr_code_url"]) == "string"
                             && typeof (result["merchant_id"]) == "number") {
-                            
+
                             //格式符合就存储result
                             wx.setStorageSync('result', result);
                             console.log(result);
@@ -131,6 +131,24 @@ Page({
     },
     getMerchant: function () {
         var that = this;
+
+        wx.request({
+            url: 'https://www.sysu-easyorder.top/merchants/' + app.globalData.merchant_id,
+            data: {},
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function (res) {
+                console.log("Get Icon");
+                console.log(res)
+                var imgUrls = that.data.imgUrls;
+                imgUrls.push('https://www.sysu-easyorder.top' + res.data.data.icon_url);
+                that.setData({
+                    imgUrls: imgUrls
+                })
+            }
+        })
+
         wx.request({
             url: 'https://www.sysu-easyorder.top/foods?merchant_id=' + app.globalData.merchant_id,
             data: {
@@ -148,11 +166,18 @@ Page({
                 var recipeCount = [];
                 var recipeFoodID = [];
                 var recipeFoodDescription = [];
-              
+
                 for (var index in data) {
+                    console.log(index);
+                    console.log(data[index]);
                     recipeDetail.push(data[index]['name']);
                     recipeMoney.push(data[index]['price']);
-                    recipeFoodImgUri.push('../../image/food.png');
+                    if (data[index]['icon_url'] == "") {
+                        recipeFoodImgUri.push("../../image/food.png");
+                    }
+                    else {
+                        recipeFoodImgUri.push('https://www.sysu-easyorder.top' + data[index]['icon_url']);
+                    }
                     recipeCount.push(0);
                     recipeFoodID.push(data[index]['food_id']);
                     recipeFoodDescription.push(data[index]['description']);
@@ -168,7 +193,7 @@ Page({
                 });
 
             },
-            fail: function(res) {
+            fail: function (res) {
                 wx.showToast({
                     title: '未知错误',
                     duration: 1000,
@@ -184,7 +209,7 @@ Page({
         //扫描二维码
         //1011 表示第一次扫码进入小程序， true模拟进入方便电脑debug
         if (app.globalData.scene == 1011) {
-            
+
             that.getScanResult().then(function (res) {
 
                 that.testScanResult().then(function (res) {
@@ -268,7 +293,7 @@ Page({
         //需要一个判断二维码是否合法
         var that = this;
         that.getScanResult().then(function (res) {
-            
+
             that.testScanResult().then(function (res) {
 
                 var QRCodeValid = wx.getStorageSync('QRCodeValid');
@@ -364,7 +389,7 @@ Page({
         })
 
     },
-    recipeItemTap: function(e) {
+    recipeItemTap: function (e) {
         var index = e.currentTarget.dataset.id;
         var recipeItem = [];
         recipeItem.push(this.data.recipeFoodImgUri[index]);
@@ -374,9 +399,9 @@ Page({
         wx.navigateTo({
             url: '../foodDescription/foodDescription?recipeItem=' + recipeItem,
         })
-       
-        
-        
+
+
+
     },
     onHide: function (e) {
         app.globalData.recipeSelected = this.data.recipeSelected;

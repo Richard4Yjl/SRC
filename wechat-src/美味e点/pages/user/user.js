@@ -83,7 +83,8 @@ Page({
                         console.log(res);
                     }
                     var recipeSelecteds = res.data.data;
-
+                    console.log("getOrderList");
+                    console.log(recipeSelecteds);
                     for (var index in recipeSelecteds) {
                         var recipeSelected = {
                             recipeFoodImgUri: [],
@@ -96,7 +97,12 @@ Page({
                             seat_id: 0,
                         };
                         for (var i in recipeSelecteds[index].foods) {
-                            recipeSelected.recipeFoodImgUri.push('../../image/food.png');
+                            if (recipeSelecteds[index].foods[i].icon_url == "") {
+                                recipeSelected.recipeFoodImgUri.push("../../image/food.png");
+                            }
+                            else {
+                                recipeSelected.recipeFoodImgUri.push("https://www.sysu-easyorder.top" + recipeSelecteds[index].foods[i].icon_url);
+                            }
                             recipeSelected.recipeDetail.push(recipeSelecteds[index].foods[i].name);
                             recipeSelected.recipeMoney.push(recipeSelecteds[index].foods[i].price);
                             recipeSelected.recipeCount.push(recipeSelecteds[index].foods[i].amount);
@@ -112,7 +118,7 @@ Page({
                             month = dateArrage[1];
                             day = dateArrage[2];
                             hour = dateArrage[3];
-                            var time = "" + year + "-" + ((month < 10)?"0":"") + month + "-" + ((day < 10)?"0":"") + day + "T" + ((hour < 10)?"0":"") + hour + recipeSelecteds[index].order_time.substr(13);
+                            var time = "" + year + "-" + ((month < 10) ? "0" : "") + month + "-" + ((day < 10) ? "0" : "") + day + "T" + ((hour < 10) ? "0" : "") + hour + recipeSelecteds[index].order_time.substr(13);
                             recipeSelected['orderTime'] = time;
                         }
                         recipeSelected.seat_id = recipeSelecteds[index].seat_id;
