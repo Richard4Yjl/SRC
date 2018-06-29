@@ -52,7 +52,9 @@ page {
 }
 .order-list-container {
     width: 100%;
-    height: fit-content;
+   position: absolute;
+   top: 217px;
+   bottom: 0;
 }
 .order-list-title{
     display: flex;
@@ -61,7 +63,7 @@ page {
     background-color: #ffffdf;
 }
 .order-list {
-    height: 370px;
+    height: 315px;
     width: 100%;
     display: flex;
     flex-direction: column;

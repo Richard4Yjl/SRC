@@ -142,7 +142,9 @@ Page({
                 console.log("Get Icon");
                 console.log(res)
                 var imgUrls = that.data.imgUrls;
-                imgUrls.push('https://www.sysu-easyorder.top' + res.data.data.icon_url);
+                if (res.data.data.icon_url != "") {
+                    imgUrls.push('https://www.sysu-easyorder.top' + res.data.data.icon_url);
+                }
                 that.setData({
                     imgUrls: imgUrls
                 })
