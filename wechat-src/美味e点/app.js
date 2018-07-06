@@ -40,6 +40,7 @@ App({
   globalData: {
     userInfo: null,
     scene: 0,
+    // selected recipe msg for each paying
     recipeSelected: {
         recipeFoodImgUri: [],
         recipeDetail: [],
@@ -50,9 +51,10 @@ App({
         moneyToPay:0,
         seat_id: 0,
     },
-    isPaying: false,
-    payRequestCoupon: false,
-    expenseTracker:[],
+    
+    isPaying: false, // record the paying status
+    payRequestCoupon: false,  // whether need coupon
+    expenseTracker:[],   
     balance: 0, 
     merchant_id: 3,
     seat_id: 11,

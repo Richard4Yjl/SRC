@@ -4,12 +4,15 @@ const app = getApp()
 const util = require('../../util.js');
 Page({
     data: {
+        //用户信息
         userInfo: {},
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
+        //历史菜单
         orderList: [],
         balance: 0,
     },
+    // 通过id获取用户的消费信息
     getCustomer: function () {
         return new Promise(function (resolve, reject) {
             wx.request({
@@ -21,7 +24,7 @@ Page({
                     'content-type': 'application/json' // 默认值
                 },
                 success: function (res) {
-
+                    //存在用户就更新信息
                     if (res.statusCode == 200) {
                         app.globalData.wechat_id = res.data.data.wechat_id;
                         app.globalData.balance = res.data.data.balance;
@@ -29,6 +32,7 @@ Page({
                     else {
                         console.log("no user exist")
                     }
+                    //返回状态值
                     resolve(res.statusCode);
 
                 },
@@ -57,8 +61,7 @@ Page({
                     'content-type': 'application/json' // 默认值
                 },
                 success: function (res) {
-                    console.log('create user');
-
+                    //成功创建用户就更新信息
                     app.globalData.customer_id = res.data.data.customer_id;
                     app.globalData.balance = res.data.data.balance;
                     app.globalData.wechat_id = res.data.data.wechat_id;
@@ -73,18 +76,16 @@ Page({
         });
 
     },
+    //获取历史订单
+    //status 0 -- 未完成的
+    //status 1 -- 完成的
     getOrderList: function (status) {
         var that = this;
         return new Promise(function (resolve, reject) {
             wx.request({
                 url: 'https://www.sysu-easyorder.top/orders?customer_id=' + app.globalData.customer_id + '&status=' + status,
                 success: function (res) {
-                    if (status == 0) {
-                        console.log(res);
-                    }
                     var recipeSelecteds = res.data.data;
-                    console.log("getOrderList");
-                    console.log(recipeSelecteds);
                     for (var index in recipeSelecteds) {
                         var recipeSelected = {
                             recipeFoodImgUri: [],
@@ -97,10 +98,12 @@ Page({
                             seat_id: 0,
                         };
                         for (var i in recipeSelecteds[index].foods) {
+                            //默认的菜品的图片
                             if (recipeSelecteds[index].foods[i].icon_url == "") {
                                 recipeSelected.recipeFoodImgUri.push("../../image/food.png");
                             }
                             else {
+                                //获取菜品的图片
                                 recipeSelected.recipeFoodImgUri.push("https://www.sysu-easyorder.top" + recipeSelecteds[index].foods[i].icon_url);
                             }
                             recipeSelected.recipeDetail.push(recipeSelecteds[index].foods[i].name);
@@ -109,6 +112,7 @@ Page({
                             recipeSelected.recipeFoodID.push(recipeSelecteds[index].foods[i].food_id);
                             recipeSelected.recipeFoodDescription.push(recipeSelecteds[index].foods[i].description);
                             recipeSelected.moneyToPay += recipeSelecteds[index].foods[i].price * recipeSelecteds[index].foods[i].amount;
+                            //更新时间的显示，格林威治时间
                             var year = parseInt(recipeSelecteds[index].order_time.substr(0, 4));
                             var month = parseInt(recipeSelecteds[index].order_time.substr(5, 2));
                             var day = parseInt(recipeSelecteds[index].order_time.substr(8, 2));
@@ -163,10 +167,8 @@ Page({
 
         var that = this;
         app.globalData.customer_id = wx.getStorageSync("customer_id");
-        console.log("app.global.customer_id:")
-        console.log(app.globalData.customer_id);
         that.getCustomer().then(function (res) {
-
+            //不存在用户就注册新用户
             if (res != 200) {
                 that.createCustomer();
             }
@@ -176,7 +178,7 @@ Page({
 
         })
 
-
+        //第一次进入获取用户信息之后跳转到home页面显示
         wx.switchTab({
             url: '../home/home',
         })
@@ -213,12 +215,14 @@ Page({
             hasUserInfo: true
         })
     },
+    //查看详细历史菜单
     orderListItemTap: function (e) {
         var index = e.currentTarget.dataset.id;
         wx.navigateTo({
             url: './../paid/paid?selectedIndex=' + index,
         })
     },
+    //充值
     balances: function (e) {
         wx.navigateTo({
             url: '../balances/balances',

@@ -7,8 +7,10 @@ Page({
      * 页面的初始数据
      */
     data: {
+        //用户扩展的优惠券的图片，功能未添加
         couponList: null,
         payRequestCoupon: false,
+
         balance: 0,
         moneyToPay: 0,
         orderTime: null,
@@ -28,10 +30,11 @@ Page({
         })
 
     },
-
+    //创建订单
     createOrder: function() {
         // 发送订单
         var recipeSelected = app.globalData.recipeSelected;
+        //格林威治时间改成北京时间
         var orderTime = util.formatTime(new Date());
         
         this.setData({
@@ -53,7 +56,7 @@ Page({
         }
       
         var that = this;
-
+        // 实现同步发送订单
         return new Promise(function (resolve, reject) {
             wx.request({
                 url: 'https://www.sysu-easyorder.top/orders',
@@ -74,9 +77,8 @@ Page({
                 success: function (res) {
              
                     app.globalData.balance -= that.data.moneyToPay;
+                    //历史订单要添加
                     var tracker = app.globalData.recipeSelected;
-                    console.log('tracker');
-                    console.log(tracker);
                     tracker['orderTime'] = that.data.orderTime;
                     app.globalData.expenseTracker.push(tracker);
                     app.globalData.recipeSelected = {
@@ -99,6 +101,7 @@ Page({
         })
 
     },
+    //充值函数
     updateBalance: function(res){
         return new Promise(function (resolve, reject) {
             wx.request({
@@ -119,8 +122,10 @@ Page({
         })
         
     },
+    //确认支付函数
     confirmButtonTap: function () {
         var that = this;
+        //金额对比
         if (this.data.moneyToPay > this.data.balance) {
             wx.showToast({
                 title: '余额不足',
@@ -136,10 +141,12 @@ Page({
                 duration: 1000,
                 mask: true
             });
+            //金额足够就创建订单，扣除对应的钱
             that.createOrder().then(function(res) {
                 that.updateBalance(res);
             })
         }
+        //2秒后自动切回个人信息页面
         setTimeout(function () {
             wx.switchTab({
                 url: './../user/user',
