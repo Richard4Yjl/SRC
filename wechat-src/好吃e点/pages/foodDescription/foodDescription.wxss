@@ -1,0 +1,21 @@
+/* pages/foodDescription.wxss */
+
+image {
+    width: 75px;
+    height: 75px;
+    display: inline-block;
+    overflow: hidden;
+    margin: 10px;
+}
+.itemDescription {
+    display: flex;
+    flex-direction: row;
+    height: 45px;
+    align-items: center;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+}
+.name, .money, .description {
+    margin-right: 5px;
+    font-size: 1.3rem;
+}

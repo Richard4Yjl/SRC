@@ -1,0 +1,14 @@
+<view class="balance-money">
+    <view class="balance">
+        <text>余额: {{balance}}</text>
+    </view>
+    <view class="money-to-pay">
+        <text>结算: {{moneyToPay}}</text>
+    </view>
+</view>
+
+
+
+<button class="confirm-button payRequestCoupon?buttonDispaly:buttonNotDisplay" bindtap='confirmButtonTap'>
+    <text>确认付款</text>
+</button>

@@ -1,0 +1,41 @@
+
+<swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}">
+        <swiper-item>
+            <image src="{{item}}" class="slide-image" />
+        </swiper-item>
+    </block>
+</swiper>
+
+
+
+<view class="{{throughQRCode?'recipe-container':'recipe-container-notScanQRCode'}}">
+
+    <scroll-view class="{{throughQRCode?'recipe-detail-container':'recipe-detail-container-notScanQRCode'}}" scroll-y>
+        <view class="recipe-item" wx:for="{{recipeFoodImgUri}}">
+            <view class="add-icon" bindtap='addIconTap' data-id="{{index}}">
+                <image src="../../image/add.png"></image>
+            </view>
+            <view class="food-icon" bindtap='recipeItemTap' data-id="{{index}}">
+                <image src="{{item}}"></image>
+            </view>
+            <view class="recipe-detail" bindtap='recipeItemTap'  data-id="{{index}}">
+                <view>
+                    <text>{{recipeDetail[index]}}</text>
+                </view>
+                <view>
+                    <text>￥{{recipeMoney[index]}}</text>
+                </view>
+            </view>
+            <view class="food-count">
+                <text>x{{recipeCount[index]}}</text>
+            </view>
+            <view class="subtract-icon" bindtap='subtractIconTap' data-id="{{index}}">
+                <image src="../../image/subtract.png"></image>
+            </view>
+        </view>
+    </scroll-view>
+</view>
+<view class="{{throughQRCode?'login-btn-view-scanCode':'login-btn-view'}}" >
+    <button class="{{throughQRCode?'login-btn-scanCode':'login-btn'}}" bindtap='scanTap'>扫码点餐</button>
+</view>

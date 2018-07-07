@@ -1,0 +1,15 @@
+<view>
+    <image src='{{recipeItem[0]}}'></image>
+    <view class="itemDescription">
+        <text class='name'>菜名:</text>
+        <text>{{recipeItem[1]}}</text>
+    </view>
+    <view class="itemDescription">
+        <text class='money'>价格:</text>
+        <text>{{recipeItem[2]}}</text>
+    </view>
+    <view class="itemDescription">
+        <text class='description'>描述:</text>
+        <text>{{recipeItem[3]}}</text>
+    </view>
+</view>
